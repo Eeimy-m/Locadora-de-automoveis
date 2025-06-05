@@ -18,6 +18,7 @@ def submenu_cliente():   #Uma função para cada opção entre veículos, client
     print("3 - Incluir")
     print("4 - Alterar")
     print("5 - Excluir")
+    print("6 - Sair")
     op = int(input("Selecione uma opção entre as fornecidas:"))
     return op
 
@@ -28,6 +29,7 @@ def submenu_veiculo():
     print("3 - Incluir")
     print("4 - Alterar")
     print("5 - Excluir")
+    print("6 - Sair")
     op = int(input("Selecione uma opção entre as fornecidas:"))
 
 def submenu_aluguel():
@@ -37,6 +39,7 @@ def submenu_aluguel():
     print("3 - Incluir")
     print("4 - Alterar")
     print("5 - Excluir")
+    print("6 - Sair")
     op = int(input("Selecione uma opção entre as fornecidas:"))
     return op
 
@@ -44,6 +47,7 @@ def submenu_Relatórios():
     print("1 - Todas as reservas de um cliente")
     print("2 - Todas as reservas do veículo")
     print("3 - Reservas por data")
+    print("4 - Sair")
     op = int(input("Selecione uma das opções a cima: "))
     return op
 
@@ -117,6 +121,17 @@ def opcoes_cliente(valor, dic, dados):
             cpf = ("CPF do cliente: ")
             nova_data = input("Correção da data de nasicmento: ")
             dados["Data de nascimento"] = nova_data
+        
+    elif valor == 5:
+        cpf = input("Digite o CPF do cliente a ser excluído: ")
+        if cpf in dic:
+            del dic[cpf]
+            print("Cliente excluído com sucesso!")
+            print(dic)
+        else:
+            print("CPF não cadastrado.")
+    elif valor == 6:
+        menu()
 
 def alterar_cilente():
     print("Alterar cliente")   
