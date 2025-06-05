@@ -92,7 +92,7 @@ def opcoes_cliente(valor, dic_clientes, dic_dados):
             print("Cliente excluído com sucesso!")
             print(dic_clientes)
         else:
-            print("CPF não cadastrado")
+            print("CPF não cadastrado.")
     elif valor == 6:
         menu()
 
