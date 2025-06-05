@@ -1,17 +1,15 @@
 import os
 def menu():
-    os.system('cls')
     print("Menu")
     print("1 - Cliente")
     print("2 - Veículo")
-    print("3 - Aluguéis")
+    print("3 - Aluguéis")  #A opção relatórios está relacionada com aluguéis
     print("4 - Relatórios")
     print("5 - Sair")
     op = int(input("Insira uma opçaõ entre as fornecidas anteriormente:"))
     return op
 
-def submenu_cliente():
-    os.system('cls')
+def submenu_cliente():   #Uma função para cada opção entre veículos, clientes... Para que na hora da opção ser executada haja uma diferenciação
     print("Submenu cliente")
     print("1 - Listar todos")
     print("2 - Listar um")
@@ -22,7 +20,6 @@ def submenu_cliente():
     return op
 
 def submenu_veiculo():
-    os.system('cls')
     print("Submenu veículo")
     print("1 - Listar todos")
     print("2 - Listar um")
@@ -32,7 +29,6 @@ def submenu_veiculo():
     op = int(input("Selecione uma opção entre as fornecidas:"))
 
 def submenu_aluguel():
-    os.system('cls')
     print("Submenu aluguel")
     print("1 - Listar todos")
     print("2 - Listar um")
@@ -40,17 +36,49 @@ def submenu_aluguel():
     print("4 - Alterar")
     print("5 - Excluir")
     op = int(input("Selecione uma opção entre as fornecidas:"))
+    return op
 
 def submenu_Relatórios():
-    os.system('cls')
     print("1 - Todas as reservas de um cliente")
     print("2 - Todas as reservas do veículo")
     print("3 - Reservas por data")
+    op = int(input("Selecione uma das opções a cima: "))
+    return op
 
+#def reservas_cliente():
 
+from datetime import date
+def opcoes_aluguel(valor, dic, dados):
+    if valor ==1:
+        print(dic)
+    elif valor == 2:
+        cpf = input("Insira o CPF do cliente: ")
+        if cpf in dic:
+            print(dic[cpf])
+        else:
+            print("CPF não encontrado no sistema.")
+    elif valor == 3:
+        print("Realização de aluguel")
+        cpf = input("Insira o CPF do cliente: ")
+        data = date.today() 
+        veiculo = input("Insira o carro a ser alugado: ")
+        dados["data"] = data
+        dados["veiculo"] = veiculo
+        dic[cpf] = dados
+        
+            
 def opcoes_cliente(valor, dic, dados):
-    os.system('cls')
-    if valor == 3:
+    if valor == 1:
+        print(dic)
+
+    elif valor == 2:
+        cpf = input("Insira o CPF do cliente: ")
+        if cpf in dic:
+            print(dic[cpf.values()])
+        else:
+            print("Usuário não encontrado.")
+
+    elif valor == 3:
         print("Incluir cliente no sistema")
         cpf = input("CPF: ")
         nome = input("Nome completo: ")
@@ -64,75 +92,61 @@ def opcoes_cliente(valor, dic, dados):
         dados["Teleofne celular"] = cel
         dados["Data de nascimento"] = data_nasc
         dic[cpf] = dados
-    elif valor == 1:
-        print(dic)
-    elif valor == 2:
-        cpf = input("Insira o CPF do cliente: ")
-        if cpf in dic:
-            print(dic[cpf.values()])
-        else:
-            print("Usuário não encontrado.")
+
     elif valor == 4:
         op = alterar_cilente()
         if op == 1:
-            cpf = input("Selecione o CPF a ser alterado: ")
-            if cpf in dic:
-                novo_cpf = input("Insira o novo CPF: ")
-                if novo_cpf in dic:
-                    print("CPF já cadastrado.")
-                else:
-                    dic[novo_cpf] = dic[cpf]
-                    del dic[cpf]
-        elif op == 2:
             cpf = ("CPF do cliente: ")
             novo_nome = input("Novo nome: ")
             dados["Nome"] = novo_nome
-        elif op == 3:
+        elif op == 2:
             cpf = ("CPF do cliente: ")
             novo_endereco = input("Novo endereço: ")
             dados["Endereço"] = novo_endereco
-        elif op == 4:
+        elif op == 3:
             cpf = ("CPF do cliente: ")
             novo_tel_fix = input("Novo telefone")
             dados["Telefone fixo"] = novo_tel_fix
-        elif op == 5:
+        elif op == 4:
             cpf = ("CPF do cliente: ")
             novo_cel = input("Novo telefone celular: ")
             dados["Telefone celular"] = novo_cel
-        elif op == 6:
+        elif op == 5:
             cpf = ("CPF do cliente: ")
             nova_data = input("Correção da data de nasicmento: ")
             dados["Data de nascimento"] = nova_data
-    
 
-
-    def alterar_cilente():
-        os.system('cls')
-        print("Alterar cliente")
-        print("1 - Alterar CPF")   #Dúvida
-        print("2 - Nome completo")
-        print("3 - Endereço")
-        print("4 - Telefone fixo")
-        print("5 - Telefone celular")
-        print("6 - Data de nascimento")
-        op = input("Selecione uma das opções a cima: ")
-        return op 
+def alterar_cilente():
+    print("Alterar cliente")   
+    print("1 - Nome completo")
+    print("2 - Endereço")
+    print("3 - Telefone fixo")
+    print("4 - Telefone celular")
+    print("5 - Data de nascimento")
+    op = input("Selecione uma das opções a cima: ")
+    return op 
 
 def main():
-    dic_clientes = {}
+    dic_clientes = {}  
     dados_clientes = {}
+    dic_alugueis = {}  #chave será o cpf do cliente e o valor o veículo alugado pelo mesmo além da data de aluguel
+    dados_aluguel = {}
+    dic_veiculos = {}
+    dados_veiculos = {} 
     option = menu()
-    option = 1
-    while option != 5:
+    cont = 1
+    while cont != 5:
         if option == 1:
             valor = submenu_cliente()
             opcoes_cliente(valor, dic_clientes, dados_clientes )
         elif option == 2:
             submenu_veiculo()
         elif option == 3:
-            submenu_aluguel()
+            valor = submenu_aluguel()
+            opcoes_aluguel(valor, dic_alugueis, dados_aluguel)
         elif option == 4:
-            submenu_Relatórios()
+            valor = submenu_Relatórios()
+            reservas_cliente(valor, )
         else:
             print("Programa encerrado.")
 
