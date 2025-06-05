@@ -9,6 +9,7 @@ def menu():
     print("4 - Relatórios")
     print("5 - Sair")
     op = int(input("Insira uma opçaõ entre as fornecidas anteriormente:"))
+    op = int(input("Insira uma opçaõ entre as fornecidas anteriormente:"))
     return op
 
 def submenu_cliente():   #Uma função para cada opção entre veículos, clientes... Para que na hora da opção ser executada haja uma diferenciação
