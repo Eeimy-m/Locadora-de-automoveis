@@ -80,7 +80,7 @@ def opcoes_cliente(valor, dic, dados):
     elif valor == 2:
         cpf = input("Insira o CPF do cliente: ")
         if cpf in dic:
-            print(dic[cpf.values()])
+            print(dic[cpf])
         else:
             print("Usuário não encontrado.")
 
@@ -101,33 +101,34 @@ def opcoes_cliente(valor, dic, dados):
 
     elif valor == 4:
         op = alterar_cilente()
-        if op == 1:
-            cpf = ("CPF do cliente: ")
-            novo_nome = input("Novo nome: ")
-            dados["Nome"] = novo_nome
-        elif op == 2:
-            cpf = ("CPF do cliente: ")
-            novo_endereco = input("Novo endereço: ")
-            dados["Endereço"] = novo_endereco
-        elif op == 3:
-            cpf = ("CPF do cliente: ")
-            novo_tel_fix = input("Novo telefone")
-            dados["Telefone fixo"] = novo_tel_fix
-        elif op == 4:
-            cpf = ("CPF do cliente: ")
-            novo_cel = input("Novo telefone celular: ")
-            dados["Telefone celular"] = novo_cel
-        elif op == 5:
-            cpf = ("CPF do cliente: ")
-            nova_data = input("Correção da data de nasicmento: ")
-            dados["Data de nascimento"] = nova_data
+
+        cpf = input("CPF do cliente: ")
+        if cpf in dic:
+            if op == 1:
+                novo_nome = input("Novo nome: ")
+                dic[cpf]["Nome"] = novo_nome
+            elif op == 2:
+                novo_endereco = input("Novo endereço: ")
+                dic[cpf]["Endereço"] = novo_endereco
+            elif op == 3:
+                novo_tel_fix = input("Novo telefone fixo: ")
+                dic[cpf]["Telefone fixo"] = novo_tel_fix
+            elif op == 4:
+                novo_cel = input("Novo telefone celular: ")
+                dic[cpf]["Telefone celular"] = novo_cel
+            elif op == 5:
+                nova_data = input("Nova data de nascimento: ")
+                dic[cpf]["Data de nascimento"] = nova_data
+            else:
+                print("Opção inválida.")
+        else:
+            print("CPF não encontrado.")
         
     elif valor == 5:
         cpf = input("Digite o CPF do cliente a ser excluído: ")
         if cpf in dic:
             del dic[cpf]
             print("Cliente excluído com sucesso!")
-            print(dic)
         else:
             print("CPF não cadastrado.")
     elif valor == 6:
@@ -141,7 +142,7 @@ def alterar_cilente():
     print("4 - Telefone celular")
     print("5 - Data de nascimento")
     op = input("Selecione uma das opções a cima: ")
-    return op 
+    return int(op) 
 
 def main():
     dic_clientes = {}  
