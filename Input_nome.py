@@ -76,7 +76,10 @@ def opcoes_aluguel(valor, dic, dados):
             
 def opcoes_cliente(valor, dic, dados):
     if valor == 1:
-        print(dic)
+        if len(dic) == 0:
+            print("Não há clientes cadastrados.")
+        else:
+            print(dic)
 
     elif valor == 2:
         cpf = input("Insira o CPF do cliente: ")
@@ -156,7 +159,17 @@ def alterar_cilente():
 
 def opcoes_veiculo(valor, dic, dados):
     if valor == 1:
-        print(dic)
+        if len(dic) == 0:
+            print("Não há veículos cadastrados.")
+        else:
+            for codigo in dic:
+                print(f"Código: {codigo}")
+                print(f"Descrição: {dic[codigo]['Descrição']}")
+                print(f"Categoria: {dic[codigo]['Categoria']}")
+                print(f"Capacidade: {dic[codigo]['Capacidade']}")
+                print(f"Combustível: {dic[codigo]['Combustível']}")
+                print(f"Ano: {dic[codigo]['Ano']}")
+                print(f"Modelo: {dic[codigo]['Modelo']}")
     
     elif valor == 2:
         codigo = input("Informe o código do veículo: ")
@@ -181,7 +194,7 @@ def opcoes_veiculo(valor, dic, dados):
             dados["Combustível"] = combustivel
             dados["Ano"] = ano
             dados["Modelo"] = modelo
-            dic[codigo] = dados
+            dic[codigo] = dados.copy() # não sobreescreve os dados conforme vai incluindo novos veiculos, existe outra forma de fazer, consultar Eloize.
             print("Veículo cadastrado com sucesso!")
         else:
             print("Código já cadastrado.")
