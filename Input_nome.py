@@ -31,6 +31,7 @@ def submenu_veiculo():
     print("5 - Excluir")
     print("6 - Sair")
     op = int(input("Selecione uma opção entre as fornecidas:"))
+    return op
 
 def submenu_aluguel():
     print("Submenu aluguel")
@@ -95,7 +96,7 @@ def opcoes_cliente(valor, dic, dados):
         dados["Nome"] = nome
         dados["Endereço"] = endereco
         dados["Telefone fixo"] = telefone_fix
-        dados["Teleofne celular"] = cel
+        dados["Telefone celular"] = cel
         dados["Data de nascimento"] = data_nasc
         dic[cpf] = dados
 
@@ -125,7 +126,7 @@ def opcoes_cliente(valor, dic, dados):
             print("CPF não encontrado.")
         
     elif valor == 5:
-        cpf = input("Digite o CPF do cliente a ser excluído: ")
+        cpf = input("Informe o CPF do cliente a ser excluído: ")
         if cpf in dic:
             del dic[cpf]
             print("Cliente excluído com sucesso!")
@@ -141,8 +142,92 @@ def alterar_cilente():
     print("3 - Telefone fixo")
     print("4 - Telefone celular")
     print("5 - Data de nascimento")
-    op = input("Selecione uma das opções a cima: ")
-    return int(op) 
+    op = int(input("Selecione uma das opções a cima: "))
+    return op
+
+def opcoes_veiculo(valor, dic, dados):
+    if valor == 1:
+        print(dic)
+    
+    elif valor == 2:
+        codigo = input("Informe o código do veículo: ")
+        if codigo in dic:
+            print(dic[codigo])
+        else:
+            print("Veículo não encontrado.")
+
+    elif valor == 3:
+        print("Incluir veículo no sistema...")
+        codigo = input("Código: ")
+        desc = input("Descrição: ")
+        categ = input("Categoria: ")
+        capac = input("Capacidade: ")
+        combustivel = input("Combustível: ")
+        ano = int(input("Ano: "))
+        modelo = input("Modelo: ")
+        dados["Descrição"] = desc
+        dados["Categoria"] = categ
+        dados["Capacidade"] = capac
+        dados["Combustível"] = combustivel
+        dados["Ano"] = ano
+        dados["Modelo"] = modelo
+        dic[codigo] = dados
+
+    elif valor == 4:
+        op = alterar_veiculo()
+
+        codigo = input("Código do veículo: ")
+        if codigo in dic:
+            if op == 1:
+                nova_desc =input("Nova descrição: ")
+                dic[codigo]["Descrição"] = nova_desc
+
+            elif op == 2:
+                nova_categ = input("Nova categoria: ")
+                dic[codigo]["Categoria"] = nova_categ
+
+            elif op == 3:
+                nova_capac = input("Nova capacidade: ")
+                dic[codigo]["Capacidade"] = nova_capac
+
+            elif op == 4:
+                novo_combustivel = input("Novo combustível: ")
+                dic[codigo]["Combustível"] = novo_combustivel
+
+            elif op == 5:
+                novo_ano = input("Novo ano: ")
+                dic[codigo]["Ano"] = novo_ano
+
+            elif op == 6:
+                novo_modelo = input("Novo modelo: ")
+                dic[codigo]["Modelo"] = novo_modelo
+
+            else:
+                print("Opção Inválida.")
+
+        else:
+            print("Código não encontrado.")
+
+    elif valor == 5:
+        codigo = input("Informe o código do veículo a ser excluído: ")
+        if codigo in dic:
+            del dic[codigo]
+        else:
+            print("Veículo não cadastrado.")
+
+    elif valor == 6:
+        menu()        
+
+def alterar_veiculo():
+    print("Alterar Veículo")
+    print("1 - Descrição")
+    print("2 - Categoria")
+    print("3 - Capacidade")
+    print("4 - Combustível")
+    print("5 - Ano")
+    print("6 - Modelo")
+    op = int(input("Selecione uma das opções a cima: "))
+    return op
 
 def main():
     dic_clientes = {}  
@@ -151,17 +236,18 @@ def main():
     dados_aluguel = {}
     dic_veiculos = {}
     dados_veiculos = {} 
-    option = menu()
     cont = 1
     while cont != 5:
+        option = menu()
         if option == 1:
-            valor = submenu_cliente()
-            opcoes_cliente(valor, dic_clientes, dados_clientes )
+            valorC = submenu_cliente()
+            opcoes_cliente(valorC, dic_clientes, dados_clientes )
         elif option == 2:
-            submenu_veiculo()
+            valorV = submenu_veiculo()
+            opcoes_veiculo(valorV,dic_veiculos,dados_veiculos)
         elif option == 3:
-            valor = submenu_aluguel()
-            opcoes_aluguel(valor, dic_alugueis, dados_aluguel)
+            valorA = submenu_aluguel()
+            opcoes_aluguel(valorA, dic_alugueis, dados_aluguel)
         elif option == 4:
             valor = submenu_Relatórios()
             reservas_cliente(valor, )
