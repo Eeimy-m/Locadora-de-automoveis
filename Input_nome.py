@@ -63,6 +63,7 @@ def opcoes_aluguel(valor, dic, dados):
             print(dic[cpf])
         else:
             print("CPF não encontrado no sistema.")
+
     elif valor == 3:
         print("Realização de aluguel")
         cpf = input("Insira o CPF do cliente: ")
@@ -71,7 +72,39 @@ def opcoes_aluguel(valor, dic, dados):
         dados["data"] = data
         dados["veiculo"] = veiculo
         dic[cpf] = dados
-        
+
+    elif valor == 4:
+        op = 1
+        print("Alterar dados de aluguel")
+        cpf = input("Insira o CPF do cliente: ")
+        if cpf in dic:
+            op = alterar_aluguel()
+            if op == 1:
+                nova_data = input("Insira a data do aluguel: ")
+                dados["data"] = nova_data   
+            elif op == 2:
+                novo_carro = input("Insira o nome do carro: ")
+                dados["veiculo"] = novo_carro
+            else:
+                print("Essa opção é inválida, tente novamente")
+        else:
+            print("CPF não encontrado no sistema")
+    
+    elif valor == 5:
+        #excluir
+        print("Excluindo dados de aluguel")
+        cpf = input("Insira o CPF do cliente: ")
+        if cpf in dic:
+            del dic[cpf]
+        else:
+            print("CPF não encontrado no sistema.")
+    
+    elif valor == 6:
+        menu()
+    
+    else:
+        print("Opção inválida, tente novamente.")
+    
             
 def opcoes_cliente(valor, dic, dados):
     if valor == 1:
@@ -101,7 +134,6 @@ def opcoes_cliente(valor, dic, dados):
 
     elif valor == 4:
         op = alterar_cilente()
-
         cpf = input("CPF do cliente: ")
         if cpf in dic:
             if op == 1:
@@ -144,6 +176,13 @@ def alterar_cilente():
     op = input("Selecione uma das opções a cima: ")
     return int(op) 
 
+def alterar_aluguel():
+    print("Alterar aluguel")   
+    print("1 - Data do aluguel")
+    print("2 - Veículo")
+    op = input("Selecione uma das opções a cima: ")
+    return int(op) 
+
 def main():
     dic_clientes = {}  
     dados_clientes = {}
@@ -151,9 +190,9 @@ def main():
     dados_aluguel = {}
     dic_veiculos = {}
     dados_veiculos = {} 
-    option = menu()
-    cont = 1
-    while cont != 5:
+    option = 1
+    while option != 5:
+        option = menu()
         if option == 1:
             valor = submenu_cliente()
             opcoes_cliente(valor, dic_clientes, dados_clientes )
@@ -165,7 +204,9 @@ def main():
         elif option == 4:
             valor = submenu_Relatórios()
             reservas_cliente(valor, )
-        else:
+        elif option == 5:
             print("Programa encerrado.")
+        else:
+            print("Opção inválida, tente novamente.")
 
 main()
