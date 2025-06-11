@@ -88,17 +88,21 @@ def opcoes_cliente(valor, dic, dados):
     elif valor == 3:
         print("Incluir cliente no sistema")
         cpf = input("CPF: ")
-        nome = input("Nome completo: ")
-        endereco = input("Endereço: ")
-        telefone_fix = input("Telefone fixo: ")
-        cel = input("Telefone celular: ")
-        data_nasc = input("Data de nascimento: ")
-        dados["Nome"] = nome
-        dados["Endereço"] = endereco
-        dados["Telefone fixo"] = telefone_fix
-        dados["Telefone celular"] = cel
-        dados["Data de nascimento"] = data_nasc
-        dic[cpf] = dados
+        if cpf not in dic:
+            nome = input("Nome completo: ")
+            endereco = input("Endereço: ")
+            telefone_fix = input("Telefone fixo: ")
+            cel = input("Telefone celular: ")
+            data_nasc = input("Data de nascimento: ")
+            dados["Nome"] = nome
+            dados["Endereço"] = endereco
+            dados["Telefone fixo"] = telefone_fix
+            dados["Telefone celular"] = cel
+            dados["Data de nascimento"] = data_nasc
+            dic[cpf] = dados
+            print("Cliente cadastrado com sucesso!")
+        else:
+            print("CPF já cadastrado. ")
 
     elif valor == 4:
         op = alterar_cilente()
@@ -108,18 +112,23 @@ def opcoes_cliente(valor, dic, dados):
             if op == 1:
                 novo_nome = input("Novo nome: ")
                 dic[cpf]["Nome"] = novo_nome
+                print("Nome alterado com sucesso!")
             elif op == 2:
                 novo_endereco = input("Novo endereço: ")
                 dic[cpf]["Endereço"] = novo_endereco
+                print("Endereço alterado com sucesso!")
             elif op == 3:
                 novo_tel_fix = input("Novo telefone fixo: ")
                 dic[cpf]["Telefone fixo"] = novo_tel_fix
+                print("Telefone fixo alterado com sucesso!")
             elif op == 4:
                 novo_cel = input("Novo telefone celular: ")
                 dic[cpf]["Telefone celular"] = novo_cel
+                print("Telefone celular alterado com sucesso!")
             elif op == 5:
                 nova_data = input("Nova data de nascimento: ")
                 dic[cpf]["Data de nascimento"] = nova_data
+                print("Data de nascimento alterada com sucesso!")
             else:
                 print("Opção inválida.")
         else:
@@ -159,19 +168,23 @@ def opcoes_veiculo(valor, dic, dados):
     elif valor == 3:
         print("Incluir veículo no sistema...")
         codigo = input("Código: ")
-        desc = input("Descrição: ")
-        categ = input("Categoria: ")
-        capac = input("Capacidade: ")
-        combustivel = input("Combustível: ")
-        ano = int(input("Ano: "))
-        modelo = input("Modelo: ")
-        dados["Descrição"] = desc
-        dados["Categoria"] = categ
-        dados["Capacidade"] = capac
-        dados["Combustível"] = combustivel
-        dados["Ano"] = ano
-        dados["Modelo"] = modelo
-        dic[codigo] = dados
+        if codigo not in dic:
+            desc = input("Descrição: ")
+            categ = input("Categoria: ")
+            capac = input("Capacidade: ")
+            combustivel = input("Combustível: ")
+            ano = int(input("Ano: "))
+            modelo = input("Modelo: ")
+            dados["Descrição"] = desc
+            dados["Categoria"] = categ
+            dados["Capacidade"] = capac
+            dados["Combustível"] = combustivel
+            dados["Ano"] = ano
+            dados["Modelo"] = modelo
+            dic[codigo] = dados
+            print("Veículo cadastrado com sucesso!")
+        else:
+            print("Código já cadastrado.")
 
     elif valor == 4:
         op = alterar_veiculo()
@@ -181,26 +194,32 @@ def opcoes_veiculo(valor, dic, dados):
             if op == 1:
                 nova_desc =input("Nova descrição: ")
                 dic[codigo]["Descrição"] = nova_desc
+                print("Descrição alterada com sucesso!")
 
             elif op == 2:
                 nova_categ = input("Nova categoria: ")
                 dic[codigo]["Categoria"] = nova_categ
+                print("Categoria alterada com sucesso!")
 
             elif op == 3:
                 nova_capac = input("Nova capacidade: ")
                 dic[codigo]["Capacidade"] = nova_capac
+                print("Capacidade alterada com sucesso!")
 
             elif op == 4:
                 novo_combustivel = input("Novo combustível: ")
                 dic[codigo]["Combustível"] = novo_combustivel
+                print("Combustível alterado com sucesso!")
 
             elif op == 5:
                 novo_ano = input("Novo ano: ")
                 dic[codigo]["Ano"] = novo_ano
+                print("Ano alterado com sucesso!")
 
             elif op == 6:
                 novo_modelo = input("Novo modelo: ")
                 dic[codigo]["Modelo"] = novo_modelo
+                print("Modelo alterado com sucesso!")
 
             else:
                 print("Opção Inválida.")
@@ -212,6 +231,7 @@ def opcoes_veiculo(valor, dic, dados):
         codigo = input("Informe o código do veículo a ser excluído: ")
         if codigo in dic:
             del dic[codigo]
+            print("Veículo excluído com sucesso!")
         else:
             print("Veículo não cadastrado.")
 
