@@ -73,7 +73,21 @@ def opcoes_aluguel(valor, dic, dados):
         dados["veiculo"] = veiculo
         dic[cpf] = dados
         
-            
+def incluirCliente():
+    nome = input("Nome completo: ")
+    endereco = input("Endereço: ")
+    telefone_fix = input("Telefone fixo: ")
+    cel = input("Telefone celular: ")
+    data_nasc = input("Data de nascimento: ")
+
+    return{
+        "Nome" : nome,
+        "Endereço": endereco,
+        "Telefone fixo" : telefone_fix,
+        "Telefone celular" :cel,
+        "Data de nascimento" :data_nasc
+    }
+    
 def opcoes_cliente(valor, dic, dados):
     if valor == 1:
         if len(dic) == 0:
@@ -92,17 +106,7 @@ def opcoes_cliente(valor, dic, dados):
         print("Incluir cliente no sistema")
         cpf = input("CPF: ")
         if cpf not in dic:
-            nome = input("Nome completo: ")
-            endereco = input("Endereço: ")
-            telefone_fix = input("Telefone fixo: ")
-            cel = input("Telefone celular: ")
-            data_nasc = input("Data de nascimento: ")
-            dados["Nome"] = nome
-            dados["Endereço"] = endereco
-            dados["Telefone fixo"] = telefone_fix
-            dados["Telefone celular"] = cel
-            dados["Data de nascimento"] = data_nasc
-            dic[cpf] = dados
+            dic[cpf] = incluirCliente()
             print("Cliente cadastrado com sucesso!")
         else:
             print("CPF já cadastrado. ")
@@ -157,6 +161,25 @@ def alterar_cilente():
     op = int(input("Selecione uma das opções a cima: "))
     return op
 
+
+def incluirVeiculo():
+    desc = input("Descrição: ")
+    categ = input("Categoria: ")
+    capac = input("Capacidade: ")
+    combustivel = input("Combustível: ")
+    ano = int(input("Ano: "))
+    modelo = input("Modelo: ")
+
+    return {
+        "Descrição": desc,
+        "Categoria": categ,
+        "Capacidade" : capac,
+        "Combustível": combustivel,
+        "Ano": ano,
+        "Modelo" : modelo
+    }
+
+
 def opcoes_veiculo(valor, dic, dados):
     if valor == 1:
         if len(dic) == 0:
@@ -188,13 +211,7 @@ def opcoes_veiculo(valor, dic, dados):
             combustivel = input("Combustível: ")
             ano = int(input("Ano: "))
             modelo = input("Modelo: ")
-            dados["Descrição"] = desc
-            dados["Categoria"] = categ
-            dados["Capacidade"] = capac
-            dados["Combustível"] = combustivel
-            dados["Ano"] = ano
-            dados["Modelo"] = modelo
-            dic[codigo] = dados.copy() # não sobreescreve os dados conforme vai incluindo novos veiculos, existe outra forma de fazer, consultar Eloize.
+            dic[codigo] = incluirVeiculo()
             print("Veículo cadastrado com sucesso!")
         else:
             print("Código já cadastrado.")
