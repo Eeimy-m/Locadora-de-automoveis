@@ -52,17 +52,20 @@ def submenu_Relatórios():
     op = int(input("Selecione uma das opções a cima: "))
     return op
 
-def reservas_cliente(valor, dicio, dados):
+
+def reservas_cliente(valor, dicio_cliente, dados_cliente, dicio_veiculo, dados_veiculo): #preciso mexer
     if valor == 1:
         cpf = input("Insira o CPF do cliente: ")
-        if cpf in dicio:
-            print()
+        if cpf in dicio_cliente:
+            for i in dicio_cliente[cpf]:
+                print(f"Data do aluguel: {dicio_cliente[cpf][0]}")
+                print(f"Veículo: {dicio_cliente[cpf][1]}")
         else:
             print("CPF não encontrado no sistema.")
     
     elif valor == 2:
         veiculo = input("Insira o nome do veículo: ")
-        if veiculo in dicio[]:
+        if veiculo in dicio_veiculo:
             print()
         else:
             print("Veículo não encontrado no sistema.")
@@ -73,13 +76,25 @@ def reservas_cliente(valor, dicio, dados):
 
 
 from datetime import date
-def opcoes_aluguel(valor, dic, dados):
+def opcoes_aluguel(valor, dic):
+    dados_aluguel = {}
     if valor ==1:
-        print(dic)
+        print("Dados de todos os alugueis: ")
+        if len(dic) != 0:
+            for cpf in dic:
+                print(f"CPF: {cpf}")
+                print(f"Data do aluguel: {dic[cpf]["data"]}")
+                print(f"Veículo alugado: {dic[cpf]["veiculo"]}")
+                print("***********************************")
+        else:
+            print("O banco de dados encontra-se vazio")
+
     elif valor == 2:
         cpf = input("Insira o CPF do cliente: ")
         if cpf in dic:
-            print(dic[cpf])
+            print(f"CPF: {cpf}")
+            print(f"Data de aluguel: {dic[cpf]["data"]}")
+            print(f"Veículo alugado: {dic[cpf]["veiculo"]}")
         else:
             print("CPF não encontrado no sistema.")
 
@@ -88,31 +103,24 @@ def opcoes_aluguel(valor, dic, dados):
         cpf = input("Insira o CPF do cliente: ")
         data = date.today() 
         veiculo = input("Insira o carro a ser alugado: ")
-        dados["data"] = data
-        dados["veiculo"] = veiculo
-        dic[cpf] = dados
-        
-def incluirCliente():
-    nome = input("Nome completo: ")
-    endereco = input("Endereço: ")
-    telefone_fix = input("Telefone fixo: ")
-    cel = input("Telefone celular: ")
-    data_nasc = input("Data de nascimento: ")
-
-    return{
-        "Nome" : nome,
-        "Endereço": endereco,
-        "Telefone fixo" : telefone_fix,
-        "Telefone celular" :cel,
-        "Data de nascimento" :data_nasc
-    }
+        dados_aluguel["data"] = data
+        dados_aluguel["veiculo"] = veiculo
+        dic[cpf] = dados_aluguel
     
-def opcoes_cliente(valor, dic, dados):
+def opcoes_cliente(valor, dic): #revisar
     if valor == 1:
-        if len(dic) == 0:
-            print("Não há clientes cadastrados.")
+        if len(dic) != 0:
+            print("Dados de todos os clientes:")
+            for cpf in dic:
+                print(f"CPF: ", cpf)
+                print(f"Nome completo: {dic[cpf]["Nome"]}")
+                print(f"Endereço: {dic[cpf]["Endereço"]}")
+                print(f"Telefone fixo: {dic[cpf]["Telefone fixo"]}")
+                print(f"Telefone celular: {dic[cpf]["Telefone celular"]}")
+                print(f"Data de nascimento: {dic[cpf]["Data de nascimento"]}")
+                print("************************************************")
         else:
-            print(dic)
+            print("Não há clientes cadastrados.")
 
     elif valor == 2:
         cpf = input("Insira o CPF do cliente: ")
@@ -121,11 +129,22 @@ def opcoes_cliente(valor, dic, dados):
         else:
             print("Usuário não encontrado.")
 
-    elif valor == 3:
+    elif valor == 3:  #sistema de input está dando errado
+        dados_clientes = {}
         print("Incluir cliente no sistema")
         cpf = input("CPF: ")
         if cpf not in dic:
-            dic[cpf] = incluirCliente()
+            nome = input("Nome completo: ")
+            endereco = input("Endereço: ")
+            telefone_fix = input("Telefone fixo: ")
+            cel = input("Telefone celular: ")
+            data_nasc = input("Data de nascimento: ")
+            dados_clientes["Nome"] = nome
+            dados_clientes["Endereço"] = endereco
+            dados_clientes["Telefone fixo"] = telefone_fix
+            dados_clientes["Telefone celular"] = cel
+            dados_clientes["Data de nascimento"] = data_nasc
+            dic[cpf] = dados_clientes
             print("Cliente cadastrado com sucesso!")
         else:
             print("CPF já cadastrado. ")
@@ -180,25 +199,8 @@ def alterar_cilente():
     return op
 
 
-def incluirVeiculo():
-    desc = input("Descrição: ")
-    categ = input("Categoria: ")
-    capac = input("Capacidade: ")
-    combustivel = input("Combustível: ")
-    ano = int(input("Ano: "))
-    modelo = input("Modelo: ")
-
-    return {
-        "Descrição": desc,
-        "Categoria": categ,
-        "Capacidade" : capac,
-        "Combustível": combustivel,
-        "Ano": ano,
-        "Modelo" : modelo
-    }
-
-
-def opcoes_veiculo(valor, dic, dados):
+def opcoes_veiculo(valor, dic):
+    dados_veiculos = {} 
     if valor == 1:
         if len(dic) == 0:
             print("Não há veículos cadastrados.")
@@ -229,7 +231,13 @@ def opcoes_veiculo(valor, dic, dados):
             combustivel = input("Combustível: ")
             ano = int(input("Ano: "))
             modelo = input("Modelo: ")
-            dic[codigo] = incluirVeiculo()
+            dados_veiculos["Descrição"] = desc
+            dados_veiculos["Categoria"] = categ
+            dados_veiculos["Capacidade"] = capac
+            dados_veiculos["Combustível"] = combustivel
+            dados_veiculos["Ano"] = ano
+            dados_veiculos["Modelo"] = modelo
+            dic[codigo] = dados_veiculos
             print("Veículo cadastrado com sucesso!")
         else:
             print("Código já cadastrado.")
@@ -299,22 +307,20 @@ def alterar_veiculo():
 
 def main():
     dic_clientes = {}  #dados dos clientes
-    dados_clientes = {}
     dic_alugueis = {}  #chave será o cpf do cliente e o valor o veículo alugado pelo mesmo além da data de aluguel
-    dados_aluguel = {}
     dic_veiculos = {}  #chave é o nome do veículo e 
-    dados_veiculos = {} 
     option = 1
     while option != 5:
         option = menu()
         if option == 1:
             valor = submenu_cliente()
-            opcoes_cliente(valor, dic_clientes, dados_clientes )
+            opcoes_cliente(valor, dic_clientes)
         elif option == 2:
-            submenu_veiculo()
+            valor = submenu_veiculo()
+            opcoes_veiculo(valor, dic_veiculos)
         elif option == 3:
             valor = submenu_aluguel()
-            opcoes_aluguel(valor, dic_alugueis, dados_aluguel)
+            opcoes_aluguel(valor, dic_alugueis)
         elif option == 4:
             valor = submenu_Relatórios()
             reservas_cliente(valor, )
