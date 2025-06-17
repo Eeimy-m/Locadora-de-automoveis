@@ -1,6 +1,6 @@
 #Locadora de automóveis
-
 import os
+
 def menu():
     print("Menu")
     print("1 - Cliente")
@@ -52,6 +52,71 @@ def submenu_Relatórios():
     op = int(input("Selecione uma das opções a cima: "))
     return op
 
+#---------arquivos------------------
+def salvarCliente(dic):
+    arq = open("clientes.txt","w")
+    for cpf, dados in dic.items():
+        arq.write(f"{cpf}\n")
+        arq.write(f"{dados['Nome']}\n")
+        arq.write(f"{dados['Endereço']}\n")
+        arq.write(f"{dados['Telefone fixo']}\n")
+        arq.write(f"{dados['Telefone celular']}\n")
+        arq.write(f"{dados['Data de nascimento']}\n")
+        arq.write("******************************\n")
+    arq.close()
+
+def carregarCliente():
+    dic = {}
+    if not os.path.exists("clientes.txt"):
+        return dic
+    arq = open("clientes.txt", "r")
+    linhas = [linha.strip() for linha in arq]
+    for i in range(0, len(linhas), 7):
+        cpf = linhas[i]
+        dic[cpf] = {
+            "Nome": linhas[i+1],
+            "Endereço": linhas[i+2],
+            "Telefone fixo": linhas[i+3],
+            "Telefone celular": linhas[i+4],
+            "Data de nascimento": linhas[i+5]
+        }
+    arq.close()
+    return dic
+
+def salvarVeiculo(dic):
+    arq = open("veiculos.txt","w")
+    for codigo, dados in dic.items():
+        arq.write(f"{codigo}\n")
+        arq.write(f"{dados['Descrição']}\n")
+        arq.write(f"{dados['Capacidade']}\n")
+        arq.write(f"{dados['Combustível']}\n")
+        arq.write(f"{dados['Ano']}\n")
+        arq.write(f"{dados['Modelo']}\n")
+        arq.write("******************************\n")
+    arq.close()
+
+def carregarVeiculo():
+    dic = {}
+    if not os.path.exists("veiculos.txt"):
+        return dic
+    arq = open("veiculos.txt", "r")
+    linhas = [linha.strip() for linha in arq]
+    for i in range(0, len(linhas), 7):
+        cpf = linhas[i]
+        dic[cpf] = {
+            "Descrição": linhas[i+1],
+            "Capacidade": linhas[i+2],
+            "Combustível": linhas[i+3],
+            "Ano": linhas[i+4],
+            "Modelo": linhas[i+5]
+        }
+    arq.close()
+    return dic
+
+def salvarAluguel(dic):
+    arq = open("alugueis.txt","w")
+
+
 
 def reservas_cliente(valor, dicio_cliente, dados_cliente, dicio_veiculo, dados_veiculo): #preciso mexer
     if valor == 1:
@@ -83,8 +148,8 @@ def opcoes_aluguel(valor, dic):
         if len(dic) != 0:
             for cpf in dic:
                 print(f"CPF: {cpf}")
-                print(f"Data do aluguel: {dic[cpf]["data"]}")
-                print(f"Veículo alugado: {dic[cpf]["veiculo"]}")
+                print(f"Data do aluguel: {dic[cpf]['data']}")
+                print(f"Veículo alugado: {dic[cpf]['veiculo']}")
                 print("***********************************")
         else:
             print("O banco de dados encontra-se vazio")
@@ -93,8 +158,8 @@ def opcoes_aluguel(valor, dic):
         cpf = input("Insira o CPF do cliente: ")
         if cpf in dic:
             print(f"CPF: {cpf}")
-            print(f"Data de aluguel: {dic[cpf]["data"]}")
-            print(f"Veículo alugado: {dic[cpf]["veiculo"]}")
+            print(f"Data de aluguel: {dic[cpf]['data']}")
+            print(f"Veículo alugado: {dic[cpf]['veiculo']}")
         else:
             print("CPF não encontrado no sistema.")
 
@@ -113,11 +178,11 @@ def opcoes_cliente(valor, dic): #revisar
             print("Dados de todos os clientes:")
             for cpf in dic:
                 print(f"CPF: ", cpf)
-                print(f"Nome completo: {dic[cpf]["Nome"]}")
-                print(f"Endereço: {dic[cpf]["Endereço"]}")
-                print(f"Telefone fixo: {dic[cpf]["Telefone fixo"]}")
-                print(f"Telefone celular: {dic[cpf]["Telefone celular"]}")
-                print(f"Data de nascimento: {dic[cpf]["Data de nascimento"]}")
+                print(f"Nome completo: {dic[cpf]['Nome']}")
+                print(f"Endereço: {dic[cpf]['Endereço']}")
+                print(f"Telefone fixo: {dic[cpf]['Telefone fixo']}")
+                print(f"Telefone celular: {dic[cpf]['Telefone celular']}")
+                print(f"Data de nascimento: {dic[cpf]['Data de nascimento']}")
                 print("************************************************")
         else:
             print("Não há clientes cadastrados.")
@@ -306,18 +371,20 @@ def alterar_veiculo():
     return op
 
 def main():
-    dic_clientes = {}  #dados dos clientes
-    dic_alugueis = {}  #chave será o cpf do cliente e o valor o veículo alugado pelo mesmo além da data de aluguel
-    dic_veiculos = {}  #chave é o nome do veículo e 
+    dic_clientes = carregarCliente()  #dados dos clientes
+    dic_alugueis = {} #chave será o cpf do cliente e o valor o veículo alugado pelo mesmo além da data de aluguel
+    dic_veiculos = carregarVeiculo() #chave é o nome do veículo e 
     option = 1
     while option != 5:
         option = menu()
         if option == 1:
             valor = submenu_cliente()
             opcoes_cliente(valor, dic_clientes)
+            salvarCliente(dic_clientes)
         elif option == 2:
             valor = submenu_veiculo()
             opcoes_veiculo(valor, dic_veiculos)
+            salvarVeiculo(dic_veiculos)
         elif option == 3:
             valor = submenu_aluguel()
             opcoes_aluguel(valor, dic_alugueis)
@@ -329,4 +396,5 @@ def main():
         else:
             print("Opção inválida, tente novamente.")
 
+    
 main()
