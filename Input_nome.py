@@ -1,4 +1,6 @@
 #Locadora de automóveis
+import os
+
 def menu():
     print("Menu")
     print("1 - Cliente")
@@ -111,8 +113,13 @@ def carregarVeiculo():
     arq.close()
     return dic
 
-def reservas_cliente(valor, dicio_cliente, dados_cliente, dicio_veiculo, dados_veiculo): 
-    #essa função precisa receber como parrâmetro todos os dicionárrios criados até agora
+def salvarAluguel(dic):
+    arq = open("alugueis.txt","w")
+
+
+
+def reservas_cliente(valor, dicio_cliente, dados_cliente, dicio_veiculo, dados_veiculo): #preciso mexer
+    #essa função precisa receber como parrâmetro todos os dicionários criados até agora
     # 1 - mostrar todos os dados de um aluguel de acordo com um cpf de um cliente
     # 2 - mostrar os dados do cliente de acordo com o código do carro
     if valor == 1:
@@ -435,6 +442,13 @@ def main():
     while option != 5:
         option = menu()
         if option == 1:
+            valor = submenu_cliente()
+            opcoes_cliente(valor, dic_clientes)
+            salvarCliente(dic_clientes)
+        elif option == 2:
+            valor = submenu_veiculo()
+            opcoes_veiculo(valor, dic_veiculos)
+            salvarVeiculo(dic_veiculos)
             opcoes_cliente(dic_clientes)
         elif option == 2:
             opcoes_veiculo(dic_veiculos)
