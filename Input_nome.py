@@ -102,14 +102,15 @@ def carregarVeiculo():
         return dic
     arq = open("veiculos.txt", "r")
     linhas = [linha.strip() for linha in arq]
-    for i in range(0, len(linhas), 7):
+    for i in range(0, len(linhas), 8):
         codigo = linhas[i]
         dic[codigo] = {
             "Descrição": linhas[i+1],
-            "Capacidade": linhas[i+2],
-            "Combustível": linhas[i+3],
-            "Ano": linhas[i+4],
-            "Modelo": linhas[i+5]
+            "Categoria": linhas[i+2],
+            "Capacidade": linhas[i+3],
+            "Combustível": linhas[i+4],
+            "Ano": linhas[i+5],
+            "Modelo": linhas[i+6]
         }
     arq.close()
     return dic
