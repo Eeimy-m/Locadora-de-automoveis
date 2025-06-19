@@ -53,28 +53,28 @@ def submenu_Relatórios():
     return op
 
 def verificacao_data(data):  #sistema que verifica se a data inserida é válida
-    if data[2] and data[5] != "/":
+    if data[2] != "/" and data[5] != "/":
         return False
     else:
-        try:
             dia, mes, ano = data.split("/")
             dia = int(dia)
             mes = int(mes)
             ano = int(ano)
             if dia < 1:  #se usar and só vai funcionar quando os dois forem verdadeiros
                 return False
-            if dia > 31:
+            elif dia > 31:
                 return False
-            if mes < 1:
+            elif mes < 1:
                 return False
-            if mes > 12:
+            elif mes > 12:
                 return False
-            if ano < 1900:
+            elif ano < 1900:
                 return False
-            if ano > 2025:
+            elif ano > 2025:
                 return False
-        except:
-            return True 
+            else:
+                return True 
+
 
 #---------arquivos------------------
 def salvarCliente(dic):
@@ -141,8 +141,30 @@ def carregarVeiculo():
 
 def salvarAluguel(dic):
     arq = open("alugueis.txt","w")
+    for cpf,dados in dic.items():
+        arq.write(f"{cpf}\n")
+        arq.write(f"{dados['data entrada']}\n")
+        arq.write(f"{dados['data saida']}\n")
+        arq.write(f"{dados['codigo veiculo']}\n")
+        arq.write(f"****************************\n")
+    arq.close()
 
-
+def carregarAluguel():
+    dic = {}
+    if not os.path.exists("alugueis.txt"):
+        return dic
+    arq = open("alugueis.txt", "r")
+    linhas = [linha.strip() for linha in arq]
+    for i in range(0, len(linhas),5):
+        cpf = linhas[i]
+        dic[cpf] = {
+            "cpf": linhas[i+1],
+            "data entrada": linhas[i+2],
+            "data saida": linhas[i+3],
+            "codigo veiculo": linhas[i+4]
+        }
+    arq.close()
+    return dic
 
 def reservas_cliente(valor, dicio_cliente, dados_cliente, dicio_veiculo, dados_veiculo): #preciso mexer
     #essa função precisa receber como parrâmetro todos os dicionários criados até agora
@@ -170,9 +192,7 @@ def reservas_cliente(valor, dicio_cliente, dados_cliente, dicio_veiculo, dados_v
     elif valor == 4:
         print()
 
-
 def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
-    dados_aluguel = {}
     valor = 1
     while valor != 6:  
         valor = submenu_aluguel()
@@ -197,14 +217,17 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                 print("CPF não encontrado no sistema.")
 
         elif valor == 3:  #melhorei o sistema de input de alugueis
+            dados_aluguel = {}
             print("Realização de aluguel")
             cpf = input("Insira o CPF do cliente: ")
             if cpf in dicio_clientes:         
-                data = input("Insira a data do aluguel no fromato dd/mm/aa: ")
-                if verificacao_data(data):
+                dataEntrada = input("Insira a data de entrada do aluguel no formato dd/mm/aaaa: ")
+                dataSaida = input("Insira a data de saída do aluguel no formato dd/mm/aaaa: ")
+                if verificacao_data(dataEntrada) and verificacao_data(dataSaida):
                     veiculo = input("Insira o codigo do veiculo a ser alugado: ")
                     if veiculo in dicio_veiculos:
-                        dados_aluguel["data"] = data
+                        dados_aluguel["data entrada"] = dataEntrada
+                        dados_aluguel["data saida"] = dataSaida
                         dados_aluguel["codigo veiculo"] = veiculo
                         dicio_alugueis[cpf] = dados_aluguel
                         print("Aluguel concluído com sucesso!")
@@ -215,12 +238,12 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
             else:
                 print("CPF não encontrrado no sistema.")
          
-        elif valor == 4: #testar
+        elif valor == 4: #alterado
             op = alterar_aluguel()
             cpf = input("CPF do cliente: ")
             if cpf in dicio_alugueis:
                 if op == 1:
-                    nova_data = input("Informe a nova data de aluguel no formato dd/mm/aa: ") 
+                    nova_data = input("Informe a nova data de aluguel no formato dd/mm/aaaa: ") 
                     if verificacao_data(nova_data):
                         dicio_alugueis[cpf]["data"] = nova_data
                     else:
@@ -245,10 +268,10 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
         elif valor == 6:
             print("Voltando ao menu principal.")
             
-
 def alterar_aluguel():
-    print("1 - Data de aluguel")
-    print("2 - Veículo alugado")
+    print("1 - Data de entrada do aluguel")
+    print("2 - Data de saída do aluguel")
+    print("3 - Veículo alugado")
     op = int(input("Insira uma das opções a cima: "))
     return op
     
@@ -347,7 +370,6 @@ def opcoes_cliente(dic):
         elif valor == 6:
             print("Saindo do submenu.")
             
-
 def alterar_cilente():
     print("Alterar cliente")   
     print("1 - Nome completo")
@@ -357,7 +379,6 @@ def alterar_cilente():
     print("5 - Data de nascimento")
     op = int(input("Selecione uma das opções a cima: "))
     return op
-
 
 def opcoes_veiculo(dic): #concertei o erro do while e do valor
     # O valor tem que começar igual a um pra estrutura de repetição funcionar do jeito certo (o exemplo da Elô tá igual a isso)
@@ -479,7 +500,7 @@ def alterar_veiculo():
 
 def main():
     dic_clientes = carregarCliente()  #dados dos clientes
-    dic_alugueis = {} #chave será o cpf do cliente e o valor o veículo alugado pelo mesmo além da data de aluguel
+    dic_alugueis = carregarAluguel() #chave será o cpf do cliente e o valor o veículo alugado pelo mesmo além da data de aluguel
     dic_veiculos = carregarVeiculo() #chave é o nome do veículo e 
     option = 1
     while option != 5:
@@ -492,6 +513,7 @@ def main():
             salvarVeiculo(dic_veiculos)
         elif option == 3:
             opcoes_aluguel(dic_alugueis, dic_clientes, dic_veiculos)
+            salvarAluguel(dic_alugueis)
         elif option == 4:
             valor = submenu_Relatórios()
             reservas_cliente()
