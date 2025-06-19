@@ -54,9 +54,6 @@ def submenu_Relatórios():
 
 
 def reservas_cliente(valor, dicio_cliente, dados_cliente, dicio_veiculo, dados_veiculo): 
-    #essa função precisa receber como parrâmetro todos os dicionárrios criados até agora
-    # 1 - mostrar todos os dados de um aluguel de acordo com um cpf de um cliente
-    # 2 - mostrar os dados do cliente de acordo com o código do carro
     if valor == 1:
         cpf = input("Insira o CPF do cliente: ")
         if cpf in dicio_cliente:

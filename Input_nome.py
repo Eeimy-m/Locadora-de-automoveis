@@ -52,6 +52,30 @@ def submenu_Relatórios():
     op = int(input("Selecione uma das opções a cima: "))
     return op
 
+def verificacao_data(data):  #sistema que verifica se a data inserida é válida
+    if data[2] and data[5] != "/":
+        return False
+    else:
+        try:
+            dia, mes, ano = data.split("/")
+            dia = int(dia)
+            mes = int(mes)
+            ano = int(ano)
+            if dia < 1:  #se usar and só vai funcionar quando os dois forem verdadeiros
+                return False
+            if dia > 31:
+                return False
+            if mes < 1:
+                return False
+            if mes > 12:
+                return False
+            if ano < 1900:
+                return False
+            if ano > 2025:
+                return False
+        except:
+            return True 
+
 #---------arquivos------------------
 def salvarCliente(dic):
     arq = open("clientes.txt","w")
@@ -177,12 +201,13 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
             cpf = input("Insira o CPF do cliente: ")
             if cpf in dicio_clientes:         
                 data = input("Insira a data do aluguel no fromato dd/mm/aa: ")
-                if data[2] and data[5] == "/":
+                if verificacao_data(data):
                     veiculo = input("Insira o codigo do veiculo a ser alugado: ")
                     if veiculo in dicio_veiculos:
                         dados_aluguel["data"] = data
                         dados_aluguel["codigo veiculo"] = veiculo
                         dicio_alugueis[cpf] = dados_aluguel
+                        print("Aluguel concluído com sucesso!")
                     else:
                         print("Veículo não encontrado no sistema.")
                 else:
@@ -195,8 +220,8 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
             cpf = input("CPF do cliente: ")
             if cpf in dicio_alugueis:
                 if op == 1:
-                    nova_data = input("Informe a nova data de aluguel no formato dd/mm/aa: ") #melhoar a verificação
-                    if data[2] and data[5] == "/":
+                    nova_data = input("Informe a nova data de aluguel no formato dd/mm/aa: ") 
+                    if verificacao_data(nova_data):
                         dicio_alugueis[cpf]["data"] = nova_data
                     else:
                         print("Fromato de data inválido, tente novamente.")
@@ -267,13 +292,16 @@ def opcoes_cliente(dic):
                 telefone_fix = input("Telefone fixo: ")
                 cel = input("Telefone celular: ")
                 data_nasc = input("Data de nascimento: ")
-                dados_clientes["Nome"] = nome
-                dados_clientes["Endereço"] = endereco
-                dados_clientes["Telefone fixo"] = telefone_fix
-                dados_clientes["Telefone celular"] = cel
-                dados_clientes["Data de nascimento"] = data_nasc
-                dic[cpf] = dados_clientes
-                print("Cliente cadastrado com sucesso!")
+                if verificacao_data(data_nasc):
+                    dados_clientes["Nome"] = nome
+                    dados_clientes["Endereço"] = endereco
+                    dados_clientes["Telefone fixo"] = telefone_fix
+                    dados_clientes["Telefone celular"] = cel
+                    dados_clientes["Data de nascimento"] = data_nasc
+                    dic[cpf] = dados_clientes
+                    print("Cliente cadastrado com sucesso!")
+                else:
+                    print("Data inválida, tente novamente.")
             else:
                 print("CPF já cadastrado. ")
 
@@ -299,8 +327,11 @@ def opcoes_cliente(dic):
                     print("Telefone celular alterado com sucesso!")
                 elif op == 5:
                     nova_data = input("Nova data de nascimento: ")
-                    dic[cpf]["Data de nascimento"] = nova_data
-                    print("Data de nascimento alterada com sucesso!")
+                    if verificacao_data(nova_data):
+                        dic[cpf]["Data de nascimento"] = nova_data
+                        print("Data de nascimento alterada com sucesso!")
+                    else:
+                        print("Data inválida, tente novamente.")
                 else:
                     print("Opção inválida.")
             else:
@@ -364,15 +395,18 @@ def opcoes_veiculo(dic): #concertei o erro do while e do valor
                 capac = input("Capacidade: ")
                 combustivel = input("Combustível: ")
                 ano = int(input("Ano: "))
-                modelo = input("Modelo: ")
-                dados_veiculos["Descrição"] = desc
-                dados_veiculos["Categoria"] = categ
-                dados_veiculos["Capacidade"] = capac
-                dados_veiculos["Combustível"] = combustivel
-                dados_veiculos["Ano"] = ano
-                dados_veiculos["Modelo"] = modelo
-                dic[codigo] = dados_veiculos
-                print("Veículo cadastrado com sucesso!")
+                if ano > 2025:
+                    print("Ano inválido, tente novamente.")  
+                else:
+                    modelo = input("Modelo: ")
+                    dados_veiculos["Descrição"] = desc
+                    dados_veiculos["Categoria"] = categ
+                    dados_veiculos["Capacidade"] = capac
+                    dados_veiculos["Combustível"] = combustivel
+                    dados_veiculos["Ano"] = ano
+                    dados_veiculos["Modelo"] = modelo
+                    dic[codigo] = dados_veiculos
+                    print("Veículo cadastrado com sucesso!")
             else:
                 print("Código já cadastrado.")
 
@@ -403,8 +437,11 @@ def opcoes_veiculo(dic): #concertei o erro do while e do valor
 
                 elif op == 5:
                     novo_ano = input("Novo ano: ")
-                    dic[codigo]["Ano"] = novo_ano
-                    print("Ano alterado com sucesso!")
+                    if ano > 2025:
+                        print("Ano inválido, tente novamente.")
+                    else:
+                        dic[codigo]["Ano"] = novo_ano
+                        print("Ano alterado com sucesso!")
 
                 elif op == 6:
                     novo_modelo = input("Novo modelo: ")
