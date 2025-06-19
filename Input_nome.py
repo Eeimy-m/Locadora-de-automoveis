@@ -225,7 +225,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
             if cpf in dicio_alugueis:
                 print(f"CPF: {cpf}")
                 print(f"Data de início: {dicio_alugueis[cpf]['data entrada']}")
-                print(f"Data de fim: {dicio_alugueis[cpf]["data saida"]}")
+                print(f"Data de fim: {dicio_alugueis[cpf]['data saida']}")
                 print(f"Veículo alugado: {dicio_alugueis[cpf]['codigo veiculo']}")
             else:
                 print("CPF não encontrado no sistema.")
@@ -244,6 +244,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                         dados_aluguel["data saida"] = dataSaida
                         dados_aluguel["codigo veiculo"] = veiculo
                         dicio_alugueis[cpf] = dados_aluguel
+                        salvarAluguel(dicio_alugueis)
                         print("Aluguel concluído com sucesso!")
                     else:
                         print("Veículo não encontrado no sistema.")
@@ -260,6 +261,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                     nova_data_entrada = input("Informe a nova data de entrada do aluguel no formato dd/mm/aaaa: ") 
                     if verificacao_data(nova_data_entrada):
                         dicio_alugueis[cpf]["data entrada"] = nova_data_entrada
+                        salvarAluguel(dicio_alugueis)
                         print("Nova data de entrada adicionada!")
                     else:
                         print("Formato de data inválido, tente novamente.")
@@ -268,6 +270,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                     nova_data_saida = input("Informe a nova data de entrada do aluguel no formato dd/mm/aaaa: ")
                     if verificacao_data(nova_data_saida):
                         dicio_alugueis[cpf]["data saida"] = nova_data_saida
+                        salvarAluguel(dicio_alugueis)
                         print("Nova data de saída adicionada!")
                     else:
                         print("Formato de data inválido, tente novamente.")
@@ -276,6 +279,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                     novo_veiculo = input("Insira o código do novo veículo: ")
                     if novo_veiculo in dicio_veiculos:
                         dicio_alugueis[cpf]["codigo veiculo"] = novo_veiculo
+                        salvarAluguel(dicio_alugueis)
                     else:
                         print("Veículo não encontrado no sistema.")
             else:
@@ -346,6 +350,7 @@ def opcoes_cliente(dic):
                     dados_clientes["Telefone celular"] = cel
                     dados_clientes["Data de nascimento"] = data_nasc
                     dic[cpf] = dados_clientes
+                    salvarCliente(dic)
                     print("Cliente cadastrado com sucesso!")
                 else:
                     print("Data inválida, tente novamente.")
@@ -359,23 +364,28 @@ def opcoes_cliente(dic):
                 if op == 1:
                     novo_nome = input("Novo nome: ")
                     dic[cpf]["Nome"] = novo_nome
+                    salvarCliente(dic)
                     print("Nome alterado com sucesso!")
                 elif op == 2:
                     novo_endereco = input("Novo endereço: ")
                     dic[cpf]["Endereço"] = novo_endereco
+                    salvarCliente(dic)
                     print("Endereço alterado com sucesso!")
                 elif op == 3:
                     novo_tel_fix = input("Novo telefone fixo: ")
                     dic[cpf]["Telefone fixo"] = novo_tel_fix
+                    salvarCliente(dic)
                     print("Telefone fixo alterado com sucesso!")
                 elif op == 4:
                     novo_cel = input("Novo telefone celular: ")
                     dic[cpf]["Telefone celular"] = novo_cel
+                    salvarCliente(dic)
                     print("Telefone celular alterado com sucesso!")
                 elif op == 5:
                     nova_data = input("Nova data de nascimento: ")
                     if verificacao_data(nova_data):
                         dic[cpf]["Data de nascimento"] = nova_data
+                        salvarCliente(dic)
                         print("Data de nascimento alterada com sucesso!")
                     else:
                         print("Data inválida, tente novamente.")
@@ -453,6 +463,7 @@ def opcoes_veiculo(dic): #concertei o erro do while e do valor
                     dados_veiculos["Ano"] = ano
                     dados_veiculos["Modelo"] = modelo
                     dic[codigo] = dados_veiculos
+                    salvarVeiculo(dic)
                     print("Veículo cadastrado com sucesso!")
             else:
                 print("Código já cadastrado.")
@@ -465,21 +476,25 @@ def opcoes_veiculo(dic): #concertei o erro do while e do valor
                 if op == 1:
                     nova_desc =input("Nova descrição: ")
                     dic[codigo]["Descrição"] = nova_desc
+                    salvarVeiculo(dic)
                     print("Descrição alterada com sucesso!")
 
                 elif op == 2:
                     nova_categ = input("Nova categoria: ")
                     dic[codigo]["Categoria"] = nova_categ
+                    salvarVeiculo(dic)
                     print("Categoria alterada com sucesso!")
 
                 elif op == 3:
                     nova_capac = input("Nova capacidade: ")
                     dic[codigo]["Capacidade"] = nova_capac
+                    salvarVeiculo(dic)
                     print("Capacidade alterada com sucesso!")
 
                 elif op == 4:
                     novo_combustivel = input("Novo combustível: ")
                     dic[codigo]["Combustível"] = novo_combustivel
+                    salvarVeiculo(dic)
                     print("Combustível alterado com sucesso!")
 
                 elif op == 5:
@@ -488,11 +503,13 @@ def opcoes_veiculo(dic): #concertei o erro do while e do valor
                         print("Ano inválido, tente novamente.")
                     else:
                         dic[codigo]["Ano"] = novo_ano
+                        salvarVeiculo(dic)
                         print("Ano alterado com sucesso!")
 
                 elif op == 6:
                     novo_modelo = input("Novo modelo: ")
                     dic[codigo]["Modelo"] = novo_modelo
+                    salvarVeiculo(dic)
                     print("Modelo alterado com sucesso!")
 
                 else:
@@ -532,19 +549,15 @@ def main():
         option = menu()
         if option == 1:
             opcoes_cliente(dic_clientes)
-            salvarCliente(dic_clientes)
         elif option == 2:
             opcoes_veiculo(dic_veiculos)
-            salvarVeiculo(dic_veiculos)
         elif option == 3:
             opcoes_aluguel(dic_alugueis, dic_clientes, dic_veiculos)
-            salvarAluguel(dic_alugueis)
         elif option == 4:
             reservas_cliente(dic_clientes, dic_veiculos, dic_alugueis)
         elif option == 5:
             print("Programa encerrado.")
         else:
             print("Opção inválida, tente novamente.")
-
-    
+   
 main()
