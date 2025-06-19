@@ -243,12 +243,22 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
             cpf = input("CPF do cliente: ")
             if cpf in dicio_alugueis:
                 if op == 1:
-                    nova_data = input("Informe a nova data de aluguel no formato dd/mm/aaaa: ") 
-                    if verificacao_data(nova_data):
-                        dicio_alugueis[cpf]["data"] = nova_data
+                    nova_data_entrada = input("Informe a nova data de entrada do aluguel no formato dd/mm/aaaa: ") 
+                    if verificacao_data(nova_data_entrada):
+                        dicio_alugueis[cpf]["data entrada"] = nova_data_entrada
+                        print("Nova data de entrada adicionada!")
                     else:
-                        print("Fromato de data inválido, tente novamente.")
+                        print("Formato de data inválido, tente novamente.")
+                        
                 elif op == 2:
+                    nova_data_saida = input("Informe a nova data de entrada do aluguel no formato dd/mm/aaaa: ")
+                    if verificacao_data(nova_data_saida):
+                        dicio_alugueis[cpf]["data saida"] = nova_data_saida
+                        print("Nova data de saída adicionada!")
+                    else:
+                        print("Formato de data inválido, tente novamente.")
+
+                elif op == 3:
                     novo_veiculo = input("Insira o código do novo veículo: ")
                     if novo_veiculo in dicio_veiculos:
                         dicio_alugueis[cpf]["codigo veiculo"] = novo_veiculo
