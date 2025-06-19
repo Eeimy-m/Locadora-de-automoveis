@@ -52,7 +52,7 @@ def submenu_Relatórios():
     op = int(input("Selecione uma das opções a cima: "))
     return op
 
-def verificacao_data(data):  #sistema que verifica se a data inserida é válida
+def verificacao_data(data):  
     if data[2] != "/" and data[5] != "/":
         return False
     else:
@@ -60,7 +60,7 @@ def verificacao_data(data):  #sistema que verifica se a data inserida é válida
             dia = int(dia)
             mes = int(mes)
             ano = int(ano)
-            if dia < 1:  #se usar and só vai funcionar quando os dois forem verdadeiros
+            if dia < 1:  
                 return False
             elif dia > 31:
                 return False
@@ -74,7 +74,6 @@ def verificacao_data(data):  #sistema que verifica se a data inserida é válida
                 return False
             else:
                 return True 
-
 
 #---------arquivos------------------
 def salvarCliente(dic):
@@ -179,16 +178,28 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis): #preciso mex
             if cpf in dicio_alugueis:
                 print(f"CPF: {cpf}")
                 for i in dicio_alugueis[cpf]: #ainda vai precisar de ajustes
-                    print(f"Data do aluguel: {dicio_alugueis[cpf]['data']}")
+                    print(f"Data do aluguel: {dicio_alugueis[cpf]['data entrada']}")
+                    print(f"Data de devolução: {dicio_alugueis[cpf]['data saida']}")
                     print(f"Veículo alugado: {dicio_alugueis[cpf]['codigo veiculo']}")
                     print("***********************************")
             else:
                 print("CPF não encontrado no sistema.")
         
         elif valor == 2:
-            veiculo = input("Insira o nome do veículo: ")
+            veiculo = input("Insira o código do veículo: ")
             if veiculo in dicio_veiculo:
-                print()
+                if veiculo in dicio_alugueis.values():
+                    print(f"Chave do veículo: {veiculo}")
+                    print(f"Modelo: {dicio_veiculo[veiculo]['Modelo']}")
+                    for i in dicio_alugueis:
+                        cpf = dicio_alugueis[veiculo].keys()
+                        print(f"CPF do cliente: {cpf}")
+                        print(f"Nome do cliente: {dicio_cliente[cpf]['Nome']}")
+                        print(f"Endereço: {dicio_cliente[cpf]['Endereço']}")
+                        print(f"Telefone fixo: {dicio_cliente[cpf]['Telefone fixo']}")
+                        print(f"Telefone celular: {dicio_cliente[cpf]['Telefone celular']}")
+                        print(f"Data de nascimento: {dicio_cliente[cpf]['Data de nascimento']}")
+                        print("***********************************")
             else:
                 print("Veículo não encontrado no sistema.")
         
@@ -196,7 +207,7 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis): #preciso mex
             data_inicio = input("Indique a data de início a ser procurada no formato dd/mm/aa: ")
             data_fim = input("Indique a data de fim a ser procurada no formato dd/mm/aa: ")
             if verificacao_data(data_inicio) and verificacao_data(data_fim):
-                if data_inicio and data_fim in dicio_alugueis.values():
+                if data_inicio and data_fim in dicio_alugueis.values(): #testar 
                     print("Alugueis feitos no período selecionado: ")
             else:
                 print("Data inválida, tente novamente.")
@@ -225,7 +236,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
             if cpf in dicio_alugueis:
                 print(f"CPF: {cpf}")
                 print(f"Data de início: {dicio_alugueis[cpf]['data entrada']}")
-                print(f"Data de fim: {dicio_alugueis[cpf]["data saida"]}")
+                print(f"Data de fim: {dicio_alugueis[cpf]['data saida']}")
                 print(f"Veículo alugado: {dicio_alugueis[cpf]['codigo veiculo']}")
             else:
                 print("CPF não encontrado no sistema.")
@@ -262,8 +273,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                         dicio_alugueis[cpf]["data entrada"] = nova_data_entrada
                         print("Nova data de entrada adicionada!")
                     else:
-                        print("Formato de data inválido, tente novamente.")
-                        
+                        print("Fromato de data inválido, tente novamente.")
                 elif op == 2:
                     nova_data_saida = input("Informe a nova data de entrada do aluguel no formato dd/mm/aaaa: ")
                     if verificacao_data(nova_data_saida):
