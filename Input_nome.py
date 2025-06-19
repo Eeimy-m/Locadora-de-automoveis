@@ -166,31 +166,43 @@ def carregarAluguel():
     arq.close()
     return dic
 
-def reservas_cliente(valor, dicio_cliente, dados_cliente, dicio_veiculo, dados_veiculo): #preciso mexer
+def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis): #preciso mexer
     #essa função precisa receber como parrâmetro todos os dicionários criados até agora
-    # 1 - mostrar todos os dados de um aluguel de acordo com um cpf de um cliente
-    # 2 - mostrar os dados do cliente de acordo com o código do carro
-    if valor == 1:
-        cpf = input("Insira o CPF do cliente: ")
-        if cpf in dicio_cliente:
-            for i in dicio_cliente[cpf]:
-                print(f"Data do aluguel: {dicio_cliente[cpf][0]}")
-                print(f"Veículo: {dicio_cliente[cpf][1]}")
-        else:
-            print("CPF não encontrado no sistema.")
-    
-    elif valor == 2:
-        veiculo = input("Insira o nome do veículo: ")
-        if veiculo in dicio_veiculo:
-            print()
-        else:
-            print("Veículo não encontrado no sistema.")
-    
-    elif valor == 3:
-        data = input("Insira a data a ser analizada: ")
-    
-    elif valor == 4:
-        print()
+    # 1 - mostrar todos os dados de um aluguel de acordo com um cpf de um cliente (todos os carros que o cliente alugou)
+    # 2 - mostrar os dados do cliente de acordo com o código do carro (todos os clientes que alugaram aquele carro)
+    # 3 - todos os aluguéis de acordo com uma data (todos os carros alugados em uma data específica)
+    valor = 1
+    while valor != 6:
+        valor = submenu_Relatórios()
+        if valor == 1:
+            cpf = input("Insira o CPF do cliente: ")
+            if cpf in dicio_alugueis:
+                print(f"CPF: {cpf}")
+                for i in dicio_alugueis[cpf]: #ainda vai precisar de ajustes
+                    print(f"Data do aluguel: {dicio_alugueis[cpf]['data']}")
+                    print(f"Veículo alugado: {dicio_alugueis[cpf]['codigo veiculo']}")
+                    print("***********************************")
+            else:
+                print("CPF não encontrado no sistema.")
+        
+        elif valor == 2:
+            veiculo = input("Insira o nome do veículo: ")
+            if veiculo in dicio_veiculo:
+                print()
+            else:
+                print("Veículo não encontrado no sistema.")
+        
+        elif valor == 3:
+            data_inicio = input("Indique a data de início a ser procurada no formato dd/mm/aa: ")
+            data_fim = input("Indique a data de fim a ser procurada no formato dd/mm/aa: ")
+            if verificacao_data(data_inicio) and verificacao_data(data_fim):
+                if data_inicio and data_fim in dicio_alugueis.values():
+                    print("Alugueis feitos no período selecionado: ")
+            else:
+                print("Data inválida, tente novamente.")
+                
+        elif valor == 4:
+            print("Voltando ao menu principal.")
 
 def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
     valor = 1
@@ -201,7 +213,8 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
             if len(dicio_alugueis) != 0:
                 for cpf in dicio_alugueis:
                     print(f"CPF: {cpf}")
-                    print(f"Data do aluguel: {dicio_alugueis[cpf]['data']}")
+                    print(f"Data do início: {dicio_alugueis[cpf]['data entrada']}")
+                    print(f"Data do fim: {dicio_alugueis[cpf]['data saida']}")
                     print(f"Veículo alugado: {dicio_alugueis[cpf]['codigo veiculo']}")
                     print("***********************************")
             else:
@@ -211,7 +224,8 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
             cpf = input("Insira o CPF do cliente: ")
             if cpf in dicio_alugueis:
                 print(f"CPF: {cpf}")
-                print(f"Data de aluguel: {dicio_alugueis[cpf]['data']}")
+                print(f"Data de início: {dicio_alugueis[cpf]['data entrada']}")
+                print(f"Data de fim: {dicio_alugueis[cpf]["data saida"]}")
                 print(f"Veículo alugado: {dicio_alugueis[cpf]['codigo veiculo']}")
             else:
                 print("CPF não encontrado no sistema.")
@@ -377,6 +391,7 @@ def opcoes_cliente(dic):
                 print("Cliente excluído com sucesso!")
             else:
                 print("CPF não cadastrado.")
+
         elif valor == 6:
             print("Saindo do submenu.")
             
@@ -525,8 +540,7 @@ def main():
             opcoes_aluguel(dic_alugueis, dic_clientes, dic_veiculos)
             salvarAluguel(dic_alugueis)
         elif option == 4:
-            valor = submenu_Relatórios()
-            reservas_cliente()
+            reservas_cliente(dic_clientes, dic_veiculos, dic_alugueis)
         elif option == 5:
             print("Programa encerrado.")
         else:
