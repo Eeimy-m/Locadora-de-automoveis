@@ -56,25 +56,24 @@ def verificacao_data(data):  #sistema que verifica se a data inserida é válida
     if data[2] and data[5] != "/":
         return False
     else:
-        try:
-            dia, mes, ano = data.split("/")
-            dia = int(dia)
-            mes = int(mes)
-            ano = int(ano)
-            if dia < 1:  #se usar and só vai funcionar quando os dois forem verdadeiros
-                return False
-            if dia > 31:
-                return False
-            if mes < 1:
-                return False
-            if mes > 12:
-                return False
-            if ano < 1900:
-                return False
-            if ano > 2025:
-                return False
-        except:
-            return True 
+        dia, mes, ano = data.split("/")
+        dia = int(dia)
+        mes = int(mes)
+        ano = int(ano)
+        if dia < 1:  #se usar and só vai funcionar quando os dois forem verdadeiros
+            return False
+        elif dia > 31:
+            return False
+        elif mes < 1:
+            return False
+        elif mes > 12:
+            return False 
+        elif ano < 1900:
+            return False
+        elif ano > 2025:
+            return False
+        else:
+            return True
 
 #---------arquivos------------------
 def salvarCliente(dic):
@@ -142,8 +141,6 @@ def carregarVeiculo():
 def salvarAluguel(dic):
     arq = open("alugueis.txt","w")
 
-
-
 def reservas_cliente(valor, dicio_cliente, dados_cliente, dicio_veiculo, dados_veiculo): #preciso mexer
     #essa função precisa receber como parrâmetro todos os dicionários criados até agora
     # 1 - mostrar todos os dados de um aluguel de acordo com um cpf de um cliente
@@ -169,7 +166,6 @@ def reservas_cliente(valor, dicio_cliente, dados_cliente, dicio_veiculo, dados_v
     
     elif valor == 4:
         print()
-
 
 def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
     dados_aluguel = {}
@@ -245,7 +241,6 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
         elif valor == 6:
             print("Voltando ao menu principal.")
             
-
 def alterar_aluguel():
     print("1 - Data de aluguel")
     print("2 - Veículo alugado")
