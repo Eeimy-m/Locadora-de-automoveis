@@ -213,7 +213,8 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
             if len(dicio_alugueis) != 0:
                 for cpf in dicio_alugueis:
                     print(f"CPF: {cpf}")
-                    print(f"Data do aluguel: {dicio_alugueis[cpf]['data']}")
+                    print(f"Data do início: {dicio_alugueis[cpf]['data entrada']}")
+                    print(f"Data do fim: {dicio_alugueis[cpf]['data saida']}")
                     print(f"Veículo alugado: {dicio_alugueis[cpf]['codigo veiculo']}")
                     print("***********************************")
             else:
@@ -223,7 +224,8 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
             cpf = input("Insira o CPF do cliente: ")
             if cpf in dicio_alugueis:
                 print(f"CPF: {cpf}")
-                print(f"Data de aluguel: {dicio_alugueis[cpf]['data']}")
+                print(f"Data de início: {dicio_alugueis[cpf]['data entrada']}")
+                print(f"Data de fim: {dicio_alugueis[cpf]["data saida"]}")
                 print(f"Veículo alugado: {dicio_alugueis[cpf]['codigo veiculo']}")
             else:
                 print("CPF não encontrado no sistema.")
@@ -379,6 +381,7 @@ def opcoes_cliente(dic):
                 print("Cliente excluído com sucesso!")
             else:
                 print("CPF não cadastrado.")
+
         elif valor == 6:
             print("Saindo do submenu.")
             
