@@ -188,18 +188,18 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis): #preciso mex
         elif valor == 2:
             veiculo = input("Insira o código do veículo: ")
             if veiculo in dicio_veiculo:
-                if veiculo in dicio_alugueis.values():
-                    print(f"Chave do veículo: {veiculo}")
-                    print(f"Modelo: {dicio_veiculo[veiculo]['Modelo']}")
-                    for i in dicio_alugueis:
-                        cpf = dicio_alugueis[veiculo].keys()
-                        print(f"CPF do cliente: {cpf}")
-                        print(f"Nome do cliente: {dicio_cliente[cpf]['Nome']}")
-                        print(f"Endereço: {dicio_cliente[cpf]['Endereço']}")
-                        print(f"Telefone fixo: {dicio_cliente[cpf]['Telefone fixo']}")
-                        print(f"Telefone celular: {dicio_cliente[cpf]['Telefone celular']}")
-                        print(f"Data de nascimento: {dicio_cliente[cpf]['Data de nascimento']}")
-                        print("***********************************")
+                for i in dicio_alugueis:
+                    for j in dicio_alugueis.values():
+                        if veiculo == j:
+                            print(f"Chave do veículo: {veiculo}")
+                            print(f"Modelo: {dicio_veiculo[veiculo]['Modelo']}")
+                            print(f"CPF do cliente: {i}")
+                            print(f"Nome: {dicio_cliente[i]['Nome']}")
+                            print(f"Endereço: {dicio_cliente[i]['Endereço']}")
+                            print(f"Telefone fixo: {dicio_cliente[i]['Telefone fixo']}")
+                            print(f"Telefone celular: {dicio_cliente[i]['Telefone celular']}")
+                            print(f"Data de nascimento: {dicio_cliente[i]['Data de nascimento']}")
+                            print("***********************************")
             else:
                 print("Veículo não encontrado no sistema.")
         
