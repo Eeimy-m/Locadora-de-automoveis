@@ -377,6 +377,7 @@ def opcoes_veiculo(dic): #concertei o erro do while e do valor
                     print(f"Combustível: {dic[codigo]['Combustível']}")
                     print(f"Ano: {dic[codigo]['Ano']}")
                     print(f"Modelo: {dic[codigo]['Modelo']}")
+                    print("************************************************")
         
         elif valor == 2:
             codigo = input("Informe o código do veículo: ")
