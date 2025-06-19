@@ -154,13 +154,12 @@ def carregarAluguel():
         return dic
     arq = open("alugueis.txt", "r")
     linhas = [linha.strip() for linha in arq]
-    for i in range(0, len(linhas),5):
+    for i in range(0, len(linhas),4):
         cpf = linhas[i]
         dic[cpf] = {
-            "cpf": linhas[i+1],
-            "data entrada": linhas[i+2],
-            "data saida": linhas[i+3],
-            "codigo veiculo": linhas[i+4]
+            "data entrada": linhas[i+1],
+            "data saida": linhas[i+2],
+            "codigo veiculo": linhas[i+3]
         }
     arq.close()
     return dic
