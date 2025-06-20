@@ -171,14 +171,21 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis):
     while valor != 4:
         valor = submenu_Relatórios()
         if valor == 1:
-            cpf = input("Insira o CPF do cliente: ")
+            cpf = input("Insira o CPF do cliente(apenas os números): ")
             if cpf in dicio_alugueis:
+                print("/--Dados do aluguel feito pelo cliente--/")
                 print(f"CPF: {cpf}")
-                for i in dicio_alugueis[cpf]: #ainda vai precisar de ajustes
-                    print(f"Data do aluguel: {dicio_alugueis[cpf]['data entrada']}")
-                    print(f"Data de devolução: {dicio_alugueis[cpf]['data saida']}")
-                    print(f"Veículo alugado: {dicio_alugueis[cpf]['codigo veiculo']}")
-                    print("***********************************")
+                print(f"Nome: {dicio_cliente[cpf]['Nome']}")
+                for i in dicio_alugueis: #ainda vai precisar de ajustes
+                    if i == cpf:
+                        print(f"Data do aluguel: {dicio_alugueis[cpf]['data entrada']}")
+                        print(f"Data de devolução: {dicio_alugueis[cpf]['data saida']}")
+                        print(f"Veículo alugado: {dicio_alugueis[cpf]['codigo veiculo']}") 
+                        for codigo, dados_veiculo in dicio_veiculo.items():
+                            if codigo == dicio_alugueis[cpf]['codigo veiculo']:
+                                print(f"Modelo: {dicio_veiculo[codigo]['Modelo']}")
+                                print("-" * 10)
+                                print()
             else:
                 print("CPF não encontrado no sistema.")
         
