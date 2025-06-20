@@ -305,7 +305,10 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                     print(f"Data do início: {dicio_alugueis[cpf]['data entrada']}")
                     print(f"Data do fim: {dicio_alugueis[cpf]['data saida']}")
                     print(f"Veículo alugado: {dicio_alugueis[cpf]['codigo veiculo']}")
-                    print("***********************************")
+                    for i in dicio_veiculos:
+                        if i == dicio_alugueis[cpf]['codigo veiculo']:
+                            print(f"Modelo: {dicio_veiculos[i]['Modelo']}")
+                    print("-" * 10)
             else:
                 print("O banco de dados encontra-se vazio")
 
@@ -316,6 +319,9 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                 print(f"Data de início: {dicio_alugueis[cpf]['data entrada']}")
                 print(f"Data de fim: {dicio_alugueis[cpf]['data saida']}")
                 print(f"Veículo alugado: {dicio_alugueis[cpf]['codigo veiculo']}")
+                for i in dicio_veiculos:
+                    if i == dicio_alugueis[cpf]['codigo veiculo']:
+                        print(f"Modelo: {dicio_veiculos[i]['Modelo']}")
             else:
                 print("CPF não encontrado no sistema.")
 
