@@ -164,10 +164,9 @@ def carregarAluguel():
     arq.close()
     return dic
 
-def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis): #preciso mexer
-    #essa função precisa receber como parrâmetro todos os dicionários criados até agora
+def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis): 
+    # Evitar o print de dados de um cliente mais de uma vez caso ele tenha alugado o mesmo carro várias vzs
     # 1 - mostrar todos os dados de um aluguel de acordo com um cpf de um cliente (todos os carros que o cliente alugou)
-    # 2 - mostrar os dados do cliente de acordo com o código do carro (todos os clientes que alugaram aquele carro)
     # 3 - todos os aluguéis de acordo com uma data (todos os carros alugados em uma data específica)
     valor = 1
     while valor != 4:
@@ -233,25 +232,32 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis): #preciso mex
             data_inicio = input("Indique a data de início a ser procurada no formato dd/mm/aa: ")
             data_fim = input("Indique a data de fim a ser procurada no formato dd/mm/aa: ")
             if verificacao_data(data_inicio) and verificacao_data(data_fim):
-                if data_inicio and data_fim in dicio_alugueis.values(): #testar 
-                    print("Alugueis feitos no período selecionado: ")
-                    for i in dicio_alugueis:
-                        if dicio_alugueis[i]['data entrada'] >= data_inicio and dicio_alugueis[i]['data saida'] <= data_fim:
-                            #percorrer o dicionário de veículos para printar todas as informações
-                            codigo = dicio_alugueis[i]['codigo veiculo']
-                            for j in dicio_veiculo:
-                                if codigo == j:
-                                    print(f"Código do veículo: {codigo}")
-                                    print(f"Modelo: {dicio_veiculo[codigo]['Modelo']}")
-                                    print(f"Descrição: {dicio_veiculo[codigo]['Descrição']}")
-                                    print(f"Categoria: {dicio_veiculo[codigo]['Categoria']}")
-                                    print(f"Capacidade: {dicio_veiculo[codigo]['Capacidade']}")
-                                    print(f"Combustível: {dicio_veiculo[codigo]['Combustível']}")
-                                    print(f"Ano: {dicio_veiculo[codigo]['Ano']}")
-                                    print("***********************************")
-                                    print("Clientes que alugaram o veículo:")
-                                print(f"CPF: {i}")
-                                print (f"Nome do cliente: {dicio_cliente[i]['Nome']}")
+                lista_veiculos = []
+                lista_clientes = []
+                for i in dicio_alugueis:
+                    if dicio_alugueis[i]['data entrada'] >= data_inicio and dicio_alugueis[i]['data saida'] <= data_fim:
+                        lista_veiculos.append(dicio_alugueis[i]['codigo veiculo'])
+                        lista_clientes.append(i)
+                    
+                if lista_veiculos == 0:
+                    print("Não houve nenhum aluguel realizado nesse período de tempo.")
+
+                for j in range(len(lista_veiculos)):
+                    if lista_veiculos[j] in dicio_veiculo:
+                        print("/--Dados do veículo--/")
+                        print(f"Código do veículo: {lista_veiculos[j]}")
+                        print(f"Modelo: {dicio_veiculo[lista_veiculos[j]]['Modelo']}")
+                        print(f"Descrição: {dicio_veiculo[lista_veiculos[j]]['Descrição']}")
+                        print(f"Categoria: {dicio_veiculo[lista_veiculos[j]]['Categoria']}")
+                        print(f"Capacidade: {dicio_veiculo[lista_veiculos[j]]['Capacidade']}")
+                        print(f"Combustível: {dicio_veiculo[lista_veiculos[j]]['Combustível']}")
+                        print(f"Ano: {dicio_veiculo[lista_veiculos[j]]['Ano']}")
+                        print("-" * 10)
+                        print()
+                        print("/--Dados do cliente--/")
+                        print(f"Nome: {dicio_cliente[lista_clientes[j]]['Nome']}")
+                        print(f"CPF: {lista_clientes[j]}")
+                        print()
             else:
                 print("Data inválida, tente novamente.")
                 
@@ -292,7 +298,8 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                 dataEntrada = input("Insira a data de entrada do aluguel no formato dd/mm/aaaa: ")
                 dataSaida = input("Insira a data de saída do aluguel no formato dd/mm/aaaa: ")
                 if verificacao_data(dataEntrada) and verificacao_data(dataSaida):
-                    veiculo = input("Insira o codigo do veiculo a ser alugado: ")
+                    veiculo = input("Insira o nome do veículo: ")
+
                     if veiculo in dicio_veiculos:
                         dados_aluguel["data entrada"] = dataEntrada
                         dados_aluguel["data saida"] = dataSaida
