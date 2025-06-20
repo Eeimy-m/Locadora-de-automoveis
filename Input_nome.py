@@ -74,6 +74,24 @@ def verificacao_data(data):
                 return False
             else:
                 return True 
+            
+def conversaoData(data): # é preciso colocar a data de tras pra fernte pra comparar algumas coisas
+    dia, mes, ano = data.split("/")
+    return (ano+mes+dia)
+
+def verificacao_veiculo(veiculo, dataEntrada, dataSaida, dicio_alugueis):#verifica se esse veiculo ja esta sendo aligado nesse intervalo de datas
+    entrada = conversaoData(dataEntrada)
+    saida = conversaoData(dataSaida)
+
+    for lista in dicio_alugueis.values():
+        for dados in lista:#ERRO AQUI **************
+            if dados['codigo veiculo'] == veiculo:
+                entrada_exitente = conversaoData(dados['data entrada'])
+                saida_existente = conversaoData(dados['data saida'])
+
+                if (entrada <= saida_existente and saida >= entrada_exitente):
+                    return False
+    return True
 
 #---------arquivos------------------
 def salvarCliente(dic):
@@ -140,12 +158,13 @@ def carregarVeiculo():
 
 def salvarAluguel(dic):
     arq = open("alugueis.txt","w")
-    for cpf,dados in dic.items():
-        arq.write(f"{cpf}\n")
-        arq.write(f"{dados['data entrada']}\n")
-        arq.write(f"{dados['data saida']}\n")
-        arq.write(f"{dados['codigo veiculo']}\n")
-        arq.write(f"****************************\n")
+    for cpf,lista in dic.items():
+        for dados in lista:
+            arq.write(f"{cpf}\n")
+            arq.write(f"{dados['data entrada']}\n")
+            arq.write(f"{dados['data saida']}\n")
+            arq.write(f"{dados['codigo veiculo']}\n")
+            arq.write(f"****************************\n")
     arq.close()
 
 def carregarAluguel():
@@ -156,11 +175,15 @@ def carregarAluguel():
     linhas = [linha.strip() for linha in arq]
     for i in range(0, len(linhas),5):
         cpf = linhas[i]
-        dic[cpf] = {
+        dados = {
             "data entrada": linhas[i+1],
             "data saida": linhas[i+2],
             "codigo veiculo": linhas[i+3]
         }
+
+        if cpf not in dic:
+            dic[cpf] = []
+        dic[cpf].append(dados)
     arq.close()
     return dic
 
@@ -303,18 +326,25 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
             if cpf in dicio_clientes:         
                 dataEntrada = input("Insira a data de entrada do aluguel no formato dd/mm/aaaa: ")
                 dataSaida = input("Insira a data de saída do aluguel no formato dd/mm/aaaa: ")
-                if verificacao_data(dataEntrada) and verificacao_data(dataSaida):
-                    veiculo = input("Insira o nome do veículo: ")
-
-                    if veiculo in dicio_veiculos:
-                        dados_aluguel["data entrada"] = dataEntrada
-                        dados_aluguel["data saida"] = dataSaida
-                        dados_aluguel["codigo veiculo"] = veiculo
-                        dicio_alugueis[cpf] = dados_aluguel
-                        salvarAluguel(dicio_alugueis)
-                        print("Aluguel concluído com sucesso!")
+                if conversaoData(dataSaida) > conversaoData(dataEntrada): # a data de saida tem que ser maior que a data de entrada
+                    if verificacao_data(dataEntrada) and verificacao_data(dataSaida):
+                        veiculo = input("Insira o codigo do veiculo a ser alugado: ")
+                        if veiculo in dicio_veiculos:
+                            if verificacao_veiculo(veiculo,dataEntrada,dataSaida,dicio_alugueis):
+                                dados_aluguel["data entrada"] = dataEntrada
+                                dados_aluguel["data saida"] = dataSaida
+                                dados_aluguel["codigo veiculo"] = veiculo
+                                if cpf not in dicio_alugueis:
+                                    dicio_alugueis[cpf] = [] #para ter varios alugueis no mesmo cpf
+                                dicio_alugueis[cpf].append(dados_aluguel)
+                                salvarAluguel(dicio_alugueis)
+                                print("Aluguel concluído com sucesso!")
+                            else:
+                                print("Veículo ja alugado para esta data.")
+                        else:
+                            print("Veículo não encontrado no sistema.")
                     else:
-                        print("Veículo não encontrado no sistema.")
+                        print("O formato da data é inválido, tente novamente.")
                 else:
                     print("O formato da data é inválido, tente novamente.")
             else:
