@@ -84,7 +84,7 @@ def verificacao_veiculo(veiculo, dataEntrada, dataSaida, dicio_alugueis):#verifi
     saida = conversaoData(dataSaida)
 
     for lista in dicio_alugueis.values():
-        for dados in lista:#ERRO AQUI **************
+        for dados in lista:
             if dados['codigo veiculo'] == veiculo:
                 entrada_exitente = conversaoData(dados['data entrada'])
                 saida_existente = conversaoData(dados['data saida'])
