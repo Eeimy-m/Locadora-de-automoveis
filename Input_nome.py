@@ -187,13 +187,11 @@ def carregarAluguel():
     arq.close()
     return dic
 
-def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis): #preciso mexer
-    #essa função precisa receber como parrâmetro todos os dicionários criados até agora
+def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis): 
+    # Evitar o print de dados de um cliente mais de uma vez caso ele tenha alugado o mesmo carro várias vzs
     # 1 - mostrar todos os dados de um aluguel de acordo com um cpf de um cliente (todos os carros que o cliente alugou)
-    # 2 - mostrar os dados do cliente de acordo com o código do carro (todos os clientes que alugaram aquele carro)
-    # 3 - todos os aluguéis de acordo com uma data (todos os carros alugados em uma data específica)
     valor = 1
-    while valor != 6:
+    while valor != 4:
         valor = submenu_Relatórios()
         if valor == 1:
             cpf = input("Insira o CPF do cliente: ")
@@ -208,29 +206,80 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis): #preciso mex
                 print("CPF não encontrado no sistema.")
         
         elif valor == 2:
-            veiculo = input("Insira o código do veículo: ")
-            if veiculo in dicio_veiculo:
-                for i in dicio_alugueis:
-                    for j in dicio_alugueis.values():
-                        if veiculo == j:
-                            print(f"Chave do veículo: {veiculo}")
-                            print(f"Modelo: {dicio_veiculo[veiculo]['Modelo']}")
-                            print(f"CPF do cliente: {i}")
+            veiculo = input("Insira o nome do veículo: ").strip()
+            codigo_encontrado = []
+            encontrou = False
+
+            for codigo, dados_veiculo in dicio_veiculo.items():
+                if dados_veiculo["Modelo"].lower() == veiculo.lower() and encontrou == False:
+                    codigo_encontrado.append(codigo)
+                    encontrou = True
+            
+            if not encontrou:
+                print(f"O veículo de nome {veiculo} não foi encontrado no sistema.")
+            
+            cpfs_encontrados = []
+            for cpf, dados_alugueis in dicio_alugueis.items():
+                if dados_alugueis['codigo veiculo'] == codigo_encontrado[0]:
+                    cpfs_encontrados.append(cpf)
+            
+            if len(cpfs_encontrados) == 0:
+                print("O veículo não foi alugado por nenhum cliente.")
+            
+            elif len(cpfs_encontrados) != 0 and encontrou == True:
+                print("/---Dados do veículo---/")
+                print(f"Modelo: {dicio_veiculo[codigo_encontrado[0]]['Modelo']}")
+                print(f"Código: {codigo_encontrado[0]}")
+                print(f"Descrição: {dicio_veiculo[codigo_encontrado[0]]['Descrição']}")
+                print(f"Categoria: {dicio_veiculo[codigo_encontrado[0]]['Categoria']}")
+                print(f"Capacidade: {dicio_veiculo[codigo_encontrado[0]]['Capacidade']}")
+                print(f"Combustível: {dicio_veiculo[codigo_encontrado[0]]['Combustível']}")
+                print(f"Ano: {dicio_veiculo[codigo_encontrado[0]]['Ano']}")
+                print("-" *10)
+                print()
+                for cpf in cpfs_encontrados:
+                    for i in dicio_cliente:
+                        if cpf == i:
+                            print("/---Dados do cliente---/")
                             print(f"Nome: {dicio_cliente[i]['Nome']}")
+                            print(f"CPF: {i}")
                             print(f"Endereço: {dicio_cliente[i]['Endereço']}")
                             print(f"Telefone fixo: {dicio_cliente[i]['Telefone fixo']}")
                             print(f"Telefone celular: {dicio_cliente[i]['Telefone celular']}")
                             print(f"Data de nascimento: {dicio_cliente[i]['Data de nascimento']}")
-                            print("***********************************")
-            else:
-                print("Veículo não encontrado no sistema.")
+                            print("-" * 10)
+                            print()
         
         elif valor == 3:
             data_inicio = input("Indique a data de início a ser procurada no formato dd/mm/aa: ")
             data_fim = input("Indique a data de fim a ser procurada no formato dd/mm/aa: ")
             if verificacao_data(data_inicio) and verificacao_data(data_fim):
-                if data_inicio and data_fim in dicio_alugueis.values(): #testar 
-                    print("Alugueis feitos no período selecionado: ")
+                lista_veiculos = []
+                lista_clientes = []
+                for i in dicio_alugueis:
+                    if dicio_alugueis[i]['data entrada'] >= data_inicio and dicio_alugueis[i]['data saida'] <= data_fim:
+                        lista_veiculos.append(dicio_alugueis[i]['codigo veiculo'])
+                        lista_clientes.append(i)
+                    
+                if lista_veiculos == 0:
+                    print("Não houve nenhum aluguel realizado nesse período de tempo.")
+
+                for j in range(len(lista_veiculos)):
+                    if lista_veiculos[j] in dicio_veiculo:
+                        print("/--Dados do veículo--/")
+                        print(f"Código do veículo: {lista_veiculos[j]}")
+                        print(f"Modelo: {dicio_veiculo[lista_veiculos[j]]['Modelo']}")
+                        print(f"Descrição: {dicio_veiculo[lista_veiculos[j]]['Descrição']}")
+                        print(f"Categoria: {dicio_veiculo[lista_veiculos[j]]['Categoria']}")
+                        print(f"Capacidade: {dicio_veiculo[lista_veiculos[j]]['Capacidade']}")
+                        print(f"Combustível: {dicio_veiculo[lista_veiculos[j]]['Combustível']}")
+                        print(f"Ano: {dicio_veiculo[lista_veiculos[j]]['Ano']}")
+                        print("-" * 10)
+                        print()
+                        print("/--Dados do cliente--/")
+                        print(f"Nome: {dicio_cliente[lista_clientes[j]]['Nome']}")
+                        print(f"CPF: {lista_clientes[j]}")
+                        print()
             else:
                 print("Data inválida, tente novamente.")
                 
