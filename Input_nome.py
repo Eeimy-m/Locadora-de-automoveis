@@ -167,7 +167,6 @@ def carregarAluguel():
 def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis): 
     # Evitar o print de dados de um cliente mais de uma vez caso ele tenha alugado o mesmo carro várias vzs
     # 1 - mostrar todos os dados de um aluguel de acordo com um cpf de um cliente (todos os carros que o cliente alugou)
-    # 3 - todos os aluguéis de acordo com uma data (todos os carros alugados em uma data específica)
     valor = 1
     while valor != 4:
         valor = submenu_Relatórios()
