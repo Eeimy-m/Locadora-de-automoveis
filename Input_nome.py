@@ -189,13 +189,13 @@ def carregarAluguel():
 
 def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis): 
     # Evitar o print de dados de um cliente mais de uma vez caso ele tenha alugado o mesmo carro várias vzs
-    # 1 - mostrar todos os dados de um aluguel de acordo com um cpf de um cliente (todos os carros que o cliente alugou)
     valor = 1
     while valor != 4:
         valor = submenu_Relatórios()
         if valor == 1:
             cpf = input("Insira o CPF do cliente(apenas os números): ")
             if cpf in dicio_alugueis:
+                os.system('clear')
                 print("/--Dados do aluguel feito pelo cliente--/")
                 print(f"CPF: {cpf}")
                 print(f"Nome: {dicio_cliente[cpf]['Nome']}")
@@ -234,6 +234,7 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis):
                 print("O veículo não foi alugado por nenhum cliente.")
             
             elif len(cpfs_encontrados) != 0 and encontrou == True:
+                os.system('clear')
                 print("/---Dados do veículo---/")
                 print(f"Modelo: {dicio_veiculo[codigo_encontrado[0]]['Modelo']}")
                 print(f"Código: {codigo_encontrado[0]}")
@@ -272,6 +273,7 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis):
                     print("Não houve nenhum aluguel realizado nesse período de tempo.")
 
                 for j in range(len(lista_veiculos)):
+                    os.system('clear')
                     if lista_veiculos[j] in dicio_veiculo:
                         print("/--Dados do veículo--/")
                         print(f"Código do veículo: {lista_veiculos[j]}")
@@ -291,6 +293,7 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis):
                 print("Data inválida, tente novamente.")
                 
         elif valor == 4:
+            os.system('clear')
             print("Voltando ao menu principal.")
 
 def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
@@ -396,6 +399,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                 print("CPF não encontrado no sistema.")
         
         elif valor == 6:
+            os.system('clear')
             print("Voltando ao menu principal.")
             
 def alterar_aluguel():
