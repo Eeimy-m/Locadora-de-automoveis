@@ -14,3 +14,91 @@ flex
 2000
 fiat uno
 ******************************
+VH001X23
+Sedan mï¿½dio confortï¿½vel
+Carro
+5
+Gasolina
+2022
+Toyota Corolla
+******************************
+VH002Y45
+SUV espaï¿½oso com traï¿½ï¿½o 4x4
+Carro
+7
+Flex
+2023
+Chevrolet Tracker
+******************************
+VH003Z78
+Moto ï¿½gil para cidade
+Moto
+2
+Gasolina
+2021
+Honda CB 500F
+******************************
+VH004A12
+Picape robusta para trabalho
+Caminhï¿½o
+3
+Diesel
+2020
+Ford Ranger
+******************************
+VH005B34
+Minivan familiar
+Van
+8
+Flex
+2022
+Volkswagen Voyage
+******************************
+VH006C56
+Esportivo de luxo
+Carro
+2
+Gasolina
+2023
+Porsche 911
+******************************
+VH007D89
+Scooter elï¿½trico urbano
+Moto
+1
+Elï¿½trico
+2024
+Honda PCX Elï¿½trica
+******************************
+VH008E90
+Caminhonete versï¿½til
+Cabine
+5
+Diesel
+2021
+Mitsubishi L200
+******************************
+VH009F12
+Hatchback econï¿½mico
+Carro
+5
+Flex
+2023
+Hyundai HB20
+******************************
+VH010G34
+SUV de luxo com tecnologia
+Carro
+5
+Hï¿½brido
+2024
+Lexus NX
+******************************
+CRZ2024A
+Sedan médio confortável
+Carro
+5
+Gasolina
+2022
+Toyota Corolla
+******************************
