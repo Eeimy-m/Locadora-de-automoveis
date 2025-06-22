@@ -630,15 +630,46 @@ def opcoes_veiculo(dic):
                     print("-" * 20)
         
         elif valor == 2:
-            codigo = input("Informe o código do veículo: ")
-            if codigo in dic:
-                print(dic[codigo])
-            else:
-                print("Veículo não encontrado.")
+            veiculo = input("Informe o nome do veículo: ").strip()
+            codigo_encontrado = []
+            encontrou = False
+            for codigo, dados_veiculo in dic.items():
+                if dados_veiculo["Modelo"].lower() == veiculo.lower():
+                    codigo_encontrado.append(codigo)
+                    encontrou = True
+
+            if not encontrou:
+                print(f"O veículo de nome {veiculo} não foi encontrado no sistema.")
+            
+            elif encontrou: 
+                if len(codigo_encontrado) > 1:
+                    codigo_escolhido = escolher_opcao_veiculo(codigo_encontrado, dic)
+                    print("/--Dados do veículo--/")
+                    print(f"Código: {codigo_escolhido}")
+                    print(f"Modelo: {dic[codigo_escolhido]['Modelo']}")
+                    print(f"Descrição: {dic[codigo_escolhido]['Descrição']}")
+                    print(f"Categoria: {dic[codigo_escolhido]['Categoria']}")
+                    print(f"Capacidade: {dic[codigo_escolhido]['Capacidade']}")
+                    print(f"Combustível: {dic[codigo_escolhido]['Combustível']}")
+                    print(f"Ano: {dic[codigo_escolhido]['Ano']}")
+                    print("-" * 20)
+                    print()
+                else:
+                    print("/--Dados do veículo--/")
+                    print(f"Código: {codigo}")
+                    print(f"Modelo: {dic[codigo]['Modelo']}")
+                    print(f"Descrição: {dic[codigo]['Descrição']}")
+                    print(f"Categoria: {dic[codigo]['Categoria']}")
+                    print(f"Capacidade: {dic[codigo]['Capacidade']}")
+                    print(f"Combustível: {dic[codigo]['Combustível']}")
+                    print(f"Ano: {dic[codigo]['Ano']}")
+                    print("-" * 20)
+                    print()
+
 
         elif valor == 3:
             dados_veiculos = {}
-            print("Incluir veículo no sistema...")
+            print("/--Incluir veículo no sistema--/")
             codigo = input("Código: ")
             if codigo not in dic:
                 desc = input("Descrição: ")
