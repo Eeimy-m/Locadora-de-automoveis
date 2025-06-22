@@ -233,7 +233,7 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis,dicio_relatori
         valor = submenu_Relatórios()
         if valor == 1:
             cpf = input("Insira o CPF do cliente(apenas os números): ")
-            relatorio = "" # variavel pra guardar todas as infos que vai pro arquivo
+            relatorio = "" #variavel pra guardar todas as infos que vai pro arquivo
 
             if cpf in dicio_alugueis:
                 os.system('cls')
