@@ -395,7 +395,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                 dataSaida = input("Insira a data de saída do aluguel no formato dd/mm/aaaa: ")
                 if conversaoData(dataSaida) > conversaoData(dataEntrada): # a data de saida tem que ser maior que a data de entrada
                     if verificacao_data(dataEntrada) and verificacao_data(dataSaida):
-                        veiculo = input("Insira o nome do veiculo a ser alugado: ")
+                        veiculo = input("Insira o modelo do veiculo a ser alugado: ")
                         lista_veiculos = []
                         encontrou = False
                         for codigo, dados_veiculo in dicio_veiculos.items():
@@ -453,7 +453,6 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                     novo_veiculo = input("Insira o código do novo veículo: ")
                     if novo_veiculo in dicio_veiculos:
                         dicio_alugueis[cpf]["codigo veiculo"] = novo_veiculo
-                        salvarAluguel(dicio_alugueis)
                     else:
                         print("Veículo não encontrado no sistema.")
             else:
@@ -463,6 +462,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
             cpf = input("Informe o CPF do cliente: ")
             if cpf in dicio_alugueis:
                 del dicio_alugueis[cpf]
+                salvarAluguel(dicio_alugueis)
                 print("Aluguel excluído do sistema com sucesso.")
             else:
                 print("CPF não encontrado no sistema.")
@@ -577,6 +577,7 @@ def opcoes_cliente(dic):
             cpf = input("Digite o CPF do cliente a ser excluído: ")
             if cpf in dic:
                 del dic[cpf]
+                salvarCliente(dic)
                 print("Cliente excluído com sucesso!")
             else:
                 print("CPF não cadastrado.")
@@ -704,6 +705,7 @@ def opcoes_veiculo(dic):
             codigo = input("Informe o código do veículo a ser excluído: ")
             if codigo in dic:
                 del dic[codigo]
+                salvarVeiculo(dic)
                 print("Veículo excluído com sucesso!")
             else:
                 print("Veículo não cadastrado.")
