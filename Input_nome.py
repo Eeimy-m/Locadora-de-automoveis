@@ -217,7 +217,7 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis):
                 print(f"CPF: {cpf}")
                 print(f"Nome: {dicio_cliente[cpf]['Nome']}")
                 print()
-                for i in dicio_alugueis: #ainda vai precisar de ajustes
+                for i in dicio_alugueis: 
                     if i == cpf:
                         for j in dicio_alugueis[cpf]:
                             print(f"Data do aluguel: {j['data entrada']}")
@@ -339,13 +339,15 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis):
         elif valor == 4:
             os.system('cls')
             print("Voltando ao menu principal.")
+        
+        else:
+            print("Opção inválida, tente novamente.")
 
 def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
     valor = 1
     while valor != 6:  
         valor = submenu_aluguel()
         if valor ==1:
-
             os.system('cls')
             print("/--Dados de todos os alugueis--/")
             if len(dicio_alugueis) != 0:
@@ -385,6 +387,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
 
         elif valor == 3:  #melhorei o sistema de input de alugueis
             dados_aluguel = {}
+            os.system('cls')
             print("Realização de aluguel")
             cpf = input("Insira o CPF do cliente: ")
             if cpf in dicio_clientes:         
@@ -425,7 +428,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
             else:
                 print("CPF não encontrrado no sistema.")
          
-        elif valor == 4: #alterado
+        elif valor == 4: 
             op = alterar_aluguel()
             cpf = input("CPF do cliente: ")
             if cpf in dicio_alugueis:
@@ -467,6 +470,10 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
         elif valor == 6:
             os.system('cls')
             print("Voltando ao menu principal.")
+        
+        else:
+            os.system('cls')
+            print("Opção inválida, tente novamente.")
             
 def alterar_aluguel():
     print("1 - Data de entrada do aluguel")
@@ -576,6 +583,9 @@ def opcoes_cliente(dic):
 
         elif valor == 6:
             print("Saindo do submenu.")
+        
+        else:
+            print("Opção inválida, tente novamente.")
             
 def alterar_cilente():
     print("Alterar cliente")   
@@ -587,8 +597,7 @@ def alterar_cilente():
     op = int(input("Selecione uma das opções a cima: "))
     return op
 
-def opcoes_veiculo(dic): #concertei o erro do while e do valor
-    # O valor tem que começar igual a um pra estrutura de repetição funcionar do jeito certo (o exemplo da Elô tá igual a isso)
+def opcoes_veiculo(dic):
     dados_veiculos = {} 
     valor = 1 
     while valor != 6:
@@ -597,6 +606,7 @@ def opcoes_veiculo(dic): #concertei o erro do while e do valor
             if len(dic) == 0:
                 print("Não há veículos cadastrados.")
             else:
+                os.system('cls')
                 for codigo in dic:
                     print(f"Código: {codigo}")
                     print(f"Descrição: {dic[codigo]['Descrição']}")
@@ -636,13 +646,13 @@ def opcoes_veiculo(dic): #concertei o erro do while e do valor
                     dados_veiculos["Modelo"] = modelo
                     dic[codigo] = dados_veiculos
                     salvarVeiculo(dic)
+                    os.system('cls')
                     print("Veículo cadastrado com sucesso!")
             else:
                 print("Código já cadastrado.")
 
         elif valor == 4:
             op = alterar_veiculo()
-
             codigo = input("Código do veículo: ")
             if codigo in dic:
                 if op == 1:
@@ -699,7 +709,12 @@ def opcoes_veiculo(dic): #concertei o erro do while e do valor
                 print("Veículo não cadastrado.")
 
         elif valor == 6:
+            os.system('cls')
             print("Saindo do submenu.")
+        
+        else:
+            os.system('cls')
+            print("Opção inválida, tente novamente.")
 
 def alterar_veiculo():
     print("Alterar Veículo")
