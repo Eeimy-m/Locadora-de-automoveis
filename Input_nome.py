@@ -205,14 +205,41 @@ def carregarAluguel():
     arq.close()
     return dic
 
-def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis): 
+def salvarRelatorio(tipo, conteudo):
+    arq = open("relatorios.txt", "a")#usando a pra add no final do arquivo sem apagar oq tinha antes
+    arq.write(f"{tipo}\n") # relatorio por CPF, veiculo ou período
+    arq.write(conteudo) #todos os dados dos relatorios
+    arq.write("****************************\n")
+    arq.close()
+
+def carregarRelatorio():
+    if not os.path.exists("relatorios.txt"):
+       return
+    arq = open("relatorios.txt", "r")
+    linhas = [linha.strip() for linha in arq] # le todas as linhas e tira a quebra de linha (\n)
+    relatorio = "" # guarda cada bloco do relatorio
+    for linha in linhas:
+        if linha == "****************************":
+            print(relatorio) # exibe todas as infos de relatorio
+            print("-"*30)
+            relatorio = "" # limpa a variavel pra guardar o prox relatorio
+        else:
+            relatorio += linha + "\n" # se não, continua guardando as infos
+    arq.close()
+
+def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis,dicio_relatorios): 
     valor = 1
     while valor != 4:
         valor = submenu_Relatórios()
         if valor == 1:
             cpf = input("Insira o CPF do cliente(apenas os números): ")
+            relatorio = "" # variavel pra guardar todas as infos que vai pro arquivo
+
             if cpf in dicio_alugueis:
                 os.system('cls')
+                relatorio += f"CPF: {cpf}\n"
+                relatorio += f"Nome: {dicio_cliente[cpf]['Nome']}\n\n"
+
                 print("/--Dados do aluguel feito pelo cliente--/")
                 print(f"CPF: {cpf}")
                 print(f"Nome: {dicio_cliente[cpf]['Nome']}")
@@ -220,6 +247,10 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis):
                 for i in dicio_alugueis: 
                     if i == cpf:
                         for j in dicio_alugueis[cpf]:
+                            relatorio += f"Data do aluguel: {j['data entrada']}\n"
+                            relatorio += f"Data de devolucao: {j['data saida']}\n"
+                            relatorio += f"Codigo do veiculo: {j['codigo veiculo']}\n\n"
+
                             print(f"Data do aluguel: {j['data entrada']}")
                             print(f"Data de devolução: {j['data saida']}")
                             print(f"Veículo alugado: {j['codigo veiculo']}") 
@@ -228,6 +259,7 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis):
                                     print(f"Modelo: {dicio_veiculo[codigo]['Modelo']}")
                                     print("-" * 20)
                                     print()
+                salvarRelatorio("RELATORIO POR CPF", relatorio)            
             else:
                 print("CPF não encontrado no sistema.")
         
@@ -235,6 +267,8 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis):
             veiculo = input("Insira o nome do veículo: ").strip()
             codigo_encontrado = []
             encontrou = False
+            relatorio = "" # variavel pra guardar todas as infos que vai pro arquivo
+
             for codigo, dados_veiculo in dicio_veiculo.items():
                 if dados_veiculo["Modelo"].lower() == veiculo.lower():
                     codigo_encontrado.append(codigo)
@@ -258,6 +292,15 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis):
                             for codigo in codigo_encontrado:
                                 for num_veiculo, dados_veiculo in dicio_veiculo.items():
                                     if codigo == num_veiculo:
+                                        dados_veiculo = dicio_veiculo[codigo]
+                                        relatorio += f"Modelo: {dados_veiculo['Modelo']}\n"
+                                        relatorio += f"Codigo: {codigo}\n"
+                                        relatorio += f"Descricao: {dados_veiculo['Descrição']}\n"
+                                        relatorio += f"Categoria: {dados_veiculo['Categoria']}\n"
+                                        relatorio += f"Capacidade: {dados_veiculo['Capacidade']}\n"
+                                        relatorio += f"Combustivel: {dados_veiculo['Combustível']}\n"
+                                        relatorio += f"Ano: {dados_veiculo['Ano']}\n\n"
+
                                         print("/---Dados do veículo---/")
                                         print(f"Modelo: {dicio_veiculo[codigo]['Modelo']}")
                                         print(f"Código: {codigo}")
@@ -273,6 +316,12 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis):
                                                 for dicionario in lista_alugueis:
                                                     if dicionario['codigo veiculo'] == codigo:
                                                         if cpf_aluguel == cpf:
+                                                            cliente = dicio_cliente[cpf]
+                                                            relatorio += f"Nome: {cliente['Nome']}\n"
+                                                            relatorio += f"CPF: {cpf}\n"
+                                                            relatorio += f"Data de aluguel: {dicionario['data entrada']}\n"
+                                                            relatorio += f"Data de devolucao: {dicionario['data saida']}\n\n"
+
                                                             print("/---Dados do aluguel/")
                                                             print(f"Nome: {dicio_cliente[cpf]['Nome']}")
                                                             print(f"CPF: {cpf}")
@@ -280,13 +329,17 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis):
                                                             print(f"Data de devolução: {dicionario['data saida']}")
                                                             print("-" * 20)
                                                             print()
-                
+                            salvarRelatorio("RELATORIO POR VEICULO", relatorio)
+
         elif valor == 3:
             data_inicio = input("Indique a data de início a ser procurada no formato dd/mm/aa: ")
             data_fim = input("Indique a data de fim a ser procurada no formato dd/mm/aa: ")
+            relatorio = "" # variavel pra guardar todas as infos que vai pro arquivo
+
             if verificacao_data(data_inicio) and verificacao_data(data_fim):
                 data_inicio_convertida = conversaoData(data_inicio)
                 data_fim_convertida = conversaoData(data_fim)
+                relatorio = ""
                 lista_veiculos = []
                 lista_clientes = []
                 for cpf, lista_alugueis in dicio_alugueis.items():
@@ -299,10 +352,20 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis):
                     
                 if len(lista_veiculos) == 0:
                     print("Não houve nenhum aluguel realizado nesse período de tempo.")
-
+        
                 for j in range(len(lista_veiculos)):
                     os.system('cls')
                     if lista_veiculos[j] in dicio_veiculo:
+                        relatorio += "/--Dados do veiculo--/\n"
+                        relatorio += f"Codigo do veiculo: {lista_veiculos[j]}\n"
+                        relatorio += f"Modelo: {dicio_veiculo[lista_veiculos[j]]['Modelo']}\n"
+                        relatorio += f"Descricao: {dicio_veiculo[lista_veiculos[j]]['Descrição']}\n"
+                        relatorio += f"Categoria: {dicio_veiculo[lista_veiculos[j]]['Categoria']}\n"
+                        relatorio += f"Capacidade: {dicio_veiculo[lista_veiculos[j]]['Capacidade']}\n"
+                        relatorio += f"Combustivel: {dicio_veiculo[lista_veiculos[j]]['Combustível']}\n"
+                        relatorio += f"Ano: {dicio_veiculo[lista_veiculos[j]]['Ano']}\n"
+                        relatorio += "-------------\n"
+
                         print("/--Dados do veículo--/")
                         print(f"Código do veículo: {lista_veiculos[j]}")
                         print(f"Modelo: {dicio_veiculo[lista_veiculos[j]]['Modelo']}")
@@ -317,6 +380,15 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis):
                         for j in range(len(lista_clientes)):
                             for cpf in dicio_cliente:
                                 if cpf == lista_clientes[j]:
+                                    relatorio += "/--Dados do Cliente--/\n"
+                                    relatorio += f"Nome: {dicio_cliente[cpf]['Nome']}\n"
+                                    relatorio += f"CPF: {cpf}\n"
+                                    relatorio += f"Endereço: {dicio_cliente[cpf]['Endereço']}\n"
+                                    relatorio += f"Telefone fixo: {dicio_cliente[cpf]['Telefone fixo']}\n"
+                                    relatorio += f"Telefone celular: {dicio_cliente[cpf]['Telefone celular']}\n"
+                                    relatorio += f"Data de nascimento: {dicio_cliente[cpf]['Data de nascimento']}\n"
+                                    relatorio += "-------------\n"
+
                                     print(f"Nome: {dicio_cliente[cpf]['Nome']}")
                                     print(f"CPF: {cpf}")
                                     print(f"Endereço: {dicio_cliente[cpf]['Endereço']}")
@@ -327,12 +399,17 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis):
                                     for documento, dados_alugueis in dicio_alugueis.items():
                                         if documento == cpf:
                                             for dado in dados_alugueis:
+                                                relatorio += "/--Dados do aluguel--/\n"
+                                                relatorio += f"Data de aluguel: {dado['data entrada']}\n"
+                                                relatorio += f"Data de devolucao: {dado['data saida']}\n\n"
+
+
                                                 print("/--Dados do aluguel--/")
                                                 print(f"Data de aluguel: {dado['data entrada']}")
                                                 print(f"Data de devolução: {dado['data saida']}")
                                                 print("-" * 20)
                                                 print()
-
+                salvarRelatorio("RELATORIO POR PERIODO", relatorio)
             else:
                 print("Data inválida, tente novamente.")
                 
@@ -733,6 +810,7 @@ def main():
     dic_clientes = carregarCliente()  #dados dos clientes
     dic_alugueis = carregarAluguel() #chave será o cpf do cliente e o valor o veículo alugado pelo mesmo além da data de aluguel
     dic_veiculos = carregarVeiculo() #chave é o nome do veículo e 
+    dic_relatorios = carregarRelatorio()
     option = 1
     while option != 5:
         option = menu()
@@ -743,7 +821,7 @@ def main():
         elif option == 3:
             opcoes_aluguel(dic_alugueis, dic_clientes, dic_veiculos)
         elif option == 4:
-            reservas_cliente(dic_clientes, dic_veiculos, dic_alugueis)
+            reservas_cliente(dic_clientes, dic_veiculos, dic_alugueis,dic_relatorios)
         elif option == 5:
             print("Programa encerrado.")
         else:

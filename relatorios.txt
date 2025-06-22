@@ -1,0 +1,47 @@
+RELATORIO POR CPF
+CPF: 12345
+Nome: Isabela Mendes
+
+Data do aluguel: 22/06/2025
+Data de devolucao: 30/07/2025
+Codigo do veiculo: 456
+
+****************************
+RELATORIO POR VEICULO
+Modelo: xre
+Codigo: 123
+Descricao: moto nova
+Categoria: moto
+Capacidade: 1 pessoa
+Combustivel: flex
+Ano: 2020
+
+Nome: Elisa Miura
+CPF: 67890
+Data de aluguel: 30/07/2025
+Data de devolucao: 15/08/2025
+
+****************************
+RELATORIO POR PERIODO
+/--Dados do veiculo--/
+Codigo do veiculo: 456
+Modelo: fiat uno
+Descricao: carro seminovo
+Categoria: carro
+Capacidade: 5 pessoas
+Combustivel: flex
+Ano: 2000
+-------------
+/--Dados do Cliente--/
+Nome: Isabela Mendes
+CPF: 12345
+Endereço: Alameda das Rosas
+Telefone fixo: 123456
+Telefone celular: 67890
+Data de nascimento: 03/05/2007
+-------------
+/--Dados do aluguel--/
+Data de aluguel: 22/06/2025
+Data de devolucao: 30/07/2025
+
+****************************
