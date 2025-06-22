@@ -205,35 +205,6 @@ def carregarAluguel():
     arq.close()
     return dic
 
-def print_relatorios(cpfs_encontrados, codigo_encontrado, codigo, dicio_veiculo, dicio_cliente ):
-    if len(cpfs_encontrados) == 0:
-            print("O veículo não foi alugado por nenhum cliente.")
-        
-    elif len(cpfs_encontrados) != 0 and len(codigo_encontrado) != 0:
-        os.system('cls')
-        print("/---Dados do veículo---/")
-        print(f"Modelo: {dicio_veiculo[codigo]['Modelo']}")
-        print(f"Código: {codigo}")
-        print(f"Descrição: {dicio_veiculo[codigo]['Descrição']}")
-        print(f"Categoria: {dicio_veiculo[codigo]['Categoria']}")
-        print(f"Capacidade: {dicio_veiculo[codigo]['Capacidade']}")
-        print(f"Combustível: {dicio_veiculo[codigo]['Combustível']}")
-        print(f"Ano: {dicio_veiculo[codigo]['Ano']}")
-        print("-" *20)
-        print()
-        for cpf in cpfs_encontrados:
-            for i in dicio_cliente:
-                if cpf == i:
-                    print("/---Dados do cliente---/")
-                    print(f"Nome: {dicio_cliente[i]['Nome']}")
-                    print(f"CPF: {i}")
-                    print(f"Endereço: {dicio_cliente[i]['Endereço']}")
-                    print(f"Telefone fixo: {dicio_cliente[i]['Telefone fixo']}")
-                    print(f"Telefone celular: {dicio_cliente[i]['Telefone celular']}")
-                    print(f"Data de nascimento: {dicio_cliente[i]['Data de nascimento']}")
-                    print("-" * 20)
-                    print()
-
 def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis): 
     valor = 1
     while valor != 4:
@@ -366,6 +337,7 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis):
                 print("Data inválida, tente novamente.")
                 
         elif valor == 4:
+            os.system('cls')
             print("Voltando ao menu principal.")
 
 def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
