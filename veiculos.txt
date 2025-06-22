@@ -12,5 +12,52 @@ moto
 1 pessoa
 alcool
 2018
-xre
+XRE
+******************************
+123456
+Sedan premium com tecnologia avan�ada
+Carro
+5 pessoas
+Híbrido
+2022
+Fusion Titanium
+******************************
+654321
+Naked bike esportiva com motor 4 cilindros
+Moto
+2
+Gasolina
+2023
+CB 650R
+******************************
+987654
+Caminhão pesado para longas distâncias
+Caminhão
+2
+Diesel
+2021
+Volvo FH 540
+******************************
+456789
+SUV médio com acabamento luxuoso
+Carro
+5
+Flex
+2023
+Tucson Limited
+******************************
+321654
+Moto urbana econômica e prática
+Moto
+2
+Gasolina
+2022
+Biz 125
+******************************
+789123
+Van de carga para transporte urbano	Utilitário
+3
+Diesel
+2020
+Sprinter 519
 ******************************

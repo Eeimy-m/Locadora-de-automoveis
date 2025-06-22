@@ -93,6 +93,24 @@ def verificacao_veiculo(veiculo, dataEntrada, dataSaida, dicio_alugueis):#verifi
                     return False
     return True
 
+def escolher_opcao_veiculo(lista_codigos, dicio_veiculos):
+    cont = 0
+    for i in lista_codigos:
+        print(f"Opções do veiculo selecionado")
+        for codigo, dados_veiculos in dicio_veiculos.items():
+            if i == codigo:
+                cont+=1
+                print(f"/--Opção {cont}--/")
+                print(f"Descrição: {dados_veiculos['Descrição']}")
+                print(f"Capacidade: {dados_veiculos['Capacidade']}")
+                print(f"Combustível: {dados_veiculos['Combustível']}")
+                print(f"Ano de lançamento: {dados_veiculos['Ano']}")
+                print("-" * 20)
+                print()
+    op = int(input("Selecione uma das opções a cima: "))
+    indice = op - 1
+    return lista_codigos[indice] #devolve para a função o código do carro escolhido
+
 #---------arquivos------------------
 def salvarCliente(dic):
     arq = open("clientes.txt","w")
@@ -187,8 +205,36 @@ def carregarAluguel():
     arq.close()
     return dic
 
+def print_relatorios(cpfs_encontrados, codigo_encontrado, codigo, dicio_veiculo, dicio_cliente ):
+    if len(cpfs_encontrados) == 0:
+            print("O veículo não foi alugado por nenhum cliente.")
+        
+    elif len(cpfs_encontrados) != 0 and len(codigo_encontrado) != 0:
+        os.system('cls')
+        print("/---Dados do veículo---/")
+        print(f"Modelo: {dicio_veiculo[codigo]['Modelo']}")
+        print(f"Código: {codigo}")
+        print(f"Descrição: {dicio_veiculo[codigo]['Descrição']}")
+        print(f"Categoria: {dicio_veiculo[codigo]['Categoria']}")
+        print(f"Capacidade: {dicio_veiculo[codigo]['Capacidade']}")
+        print(f"Combustível: {dicio_veiculo[codigo]['Combustível']}")
+        print(f"Ano: {dicio_veiculo[codigo]['Ano']}")
+        print("-" *20)
+        print()
+        for cpf in cpfs_encontrados:
+            for i in dicio_cliente:
+                if cpf == i:
+                    print("/---Dados do cliente---/")
+                    print(f"Nome: {dicio_cliente[i]['Nome']}")
+                    print(f"CPF: {i}")
+                    print(f"Endereço: {dicio_cliente[i]['Endereço']}")
+                    print(f"Telefone fixo: {dicio_cliente[i]['Telefone fixo']}")
+                    print(f"Telefone celular: {dicio_cliente[i]['Telefone celular']}")
+                    print(f"Data de nascimento: {dicio_cliente[i]['Data de nascimento']}")
+                    print("-" * 20)
+                    print()
+
 def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis): 
-    # Evitar o print de dados de um cliente mais de uma vez caso ele tenha alugado o mesmo carro várias vzs
     valor = 1
     while valor != 4:
         valor = submenu_Relatórios()
@@ -218,49 +264,52 @@ def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis):
             veiculo = input("Insira o nome do veículo: ").strip()
             codigo_encontrado = []
             encontrou = False
-
             for codigo, dados_veiculo in dicio_veiculo.items():
-                if dados_veiculo["Modelo"].lower() == veiculo.lower() and encontrou == False:
+                if dados_veiculo["Modelo"].lower() == veiculo.lower():
                     codigo_encontrado.append(codigo)
                     encontrou = True
-            
+
             if not encontrou:
                 print(f"O veículo de nome {veiculo} não foi encontrado no sistema.")
-            
-            cpfs_encontrados = []
-            for cpf, lista_alugueis in dicio_alugueis.items():
-                for dados_alugueis in lista_alugueis:
-                    if dados_alugueis['codigo veiculo'] == codigo_encontrado[0]:
-                        cpfs_encontrados.append(cpf)
-            
-            if len(cpfs_encontrados) == 0:
-                print("O veículo não foi alugado por nenhum cliente.")
-            
-            elif len(cpfs_encontrados) != 0 and encontrou == True:
-                os.system('cls')
-                print("/---Dados do veículo---/")
-                print(f"Modelo: {dicio_veiculo[codigo_encontrado[0]]['Modelo']}")
-                print(f"Código: {codigo_encontrado[0]}")
-                print(f"Descrição: {dicio_veiculo[codigo_encontrado[0]]['Descrição']}")
-                print(f"Categoria: {dicio_veiculo[codigo_encontrado[0]]['Categoria']}")
-                print(f"Capacidade: {dicio_veiculo[codigo_encontrado[0]]['Capacidade']}")
-                print(f"Combustível: {dicio_veiculo[codigo_encontrado[0]]['Combustível']}")
-                print(f"Ano: {dicio_veiculo[codigo_encontrado[0]]['Ano']}")
-                print("-" *20)
-                print()
-                for cpf in cpfs_encontrados:
-                    for i in dicio_cliente:
-                        if cpf == i:
-                            print("/---Dados do cliente---/")
-                            print(f"Nome: {dicio_cliente[i]['Nome']}")
-                            print(f"CPF: {i}")
-                            print(f"Endereço: {dicio_cliente[i]['Endereço']}")
-                            print(f"Telefone fixo: {dicio_cliente[i]['Telefone fixo']}")
-                            print(f"Telefone celular: {dicio_cliente[i]['Telefone celular']}")
-                            print(f"Data de nascimento: {dicio_cliente[i]['Data de nascimento']}")
-                            print("-" * 20)
-                            print()
-        
+
+            elif encontrou:
+                cpfs_encontrados = []
+                for cpf, lista_alugueis in dicio_alugueis.items():
+                    for i in codigo_encontrado:
+                        for dados_alugueis in lista_alugueis:
+                            if dados_alugueis['codigo veiculo'] == i:
+                                cpfs_encontrados.append(cpf)
+                if len(cpfs_encontrados) == 0:
+                    print("O veículo não foi alugado por nenhum cliente.")
+
+                elif len(cpfs_encontrados) != 0 and encontrou == True:
+                            os.system('cls')
+                            for codigo in codigo_encontrado:
+                                for num_veiculo, dados_veiculo in dicio_veiculo.items():
+                                    if codigo == num_veiculo:
+                                        print("/---Dados do veículo---/")
+                                        print(f"Modelo: {dicio_veiculo[codigo]['Modelo']}")
+                                        print(f"Código: {codigo}")
+                                        print(f"Descrição: {dicio_veiculo[codigo]['Descrição']}")
+                                        print(f"Categoria: {dicio_veiculo[codigo]['Categoria']}")
+                                        print(f"Capacidade: {dicio_veiculo[codigo]['Capacidade']}")
+                                        print(f"Combustível: {dicio_veiculo[codigo]['Combustível']}")
+                                        print(f"Ano: {dicio_veiculo[codigo]['Ano']}")
+                                        print("-" *20)
+                                        print()
+                                        for cpf in cpfs_encontrados:
+                                            for cpf_aluguel, lista_alugueis in dicio_alugueis.items():
+                                                for dicionario in lista_alugueis:
+                                                    if dicionario['codigo veiculo'] == codigo:
+                                                        if cpf_aluguel == cpf:
+                                                            print("/---Dados do aluguel/")
+                                                            print(f"Nome: {dicio_cliente[cpf]['Nome']}")
+                                                            print(f"CPF: {cpf}")
+                                                            print(f"Data de aluguel: {dicionario['data entrada']}")
+                                                            print(f"Data de devolução: {dicionario['data saida']}")
+                                                            print("-" * 20)
+                                                            print()
+                
         elif valor == 3:
             data_inicio = input("Indique a data de início a ser procurada no formato dd/mm/aa: ")
             data_fim = input("Indique a data de fim a ser procurada no formato dd/mm/aa: ")
@@ -371,12 +420,23 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                 dataSaida = input("Insira a data de saída do aluguel no formato dd/mm/aaaa: ")
                 if conversaoData(dataSaida) > conversaoData(dataEntrada): # a data de saida tem que ser maior que a data de entrada
                     if verificacao_data(dataEntrada) and verificacao_data(dataSaida):
-                        veiculo = input("Insira o codigo do veiculo a ser alugado: ")
-                        if veiculo in dicio_veiculos:
+                        veiculo = input("Insira o nome do veiculo a ser alugado: ")
+                        lista_veiculos = []
+                        encontrou = False
+                        for codigo, dados_veiculo in dicio_veiculos.items():
+                            if dados_veiculo["Modelo"].lower() == veiculo.lower():
+                                lista_veiculos.append(codigo)
+                                encontrou = True
+                        if len(lista_veiculos) > 1:
+                            escolha = escolher_opcao_veiculo(lista_veiculos, dicio_veiculos) 
+                        else:
+                            escolha = lista_veiculos[0]
+
+                        if escolha in dicio_veiculos:
                             if verificacao_veiculo(veiculo,dataEntrada,dataSaida,dicio_alugueis):
                                 dados_aluguel["data entrada"] = dataEntrada
                                 dados_aluguel["data saida"] = dataSaida
-                                dados_aluguel["codigo veiculo"] = veiculo
+                                dados_aluguel["codigo veiculo"] = escolha
                                 if cpf not in dicio_alugueis:
                                     dicio_alugueis[cpf] = [] #para ter varios alugueis no mesmo cpf
                                 dicio_alugueis[cpf].append(dados_aluguel)
@@ -457,7 +517,7 @@ def opcoes_cliente(dic):
                     print(f"Telefone fixo: {dic[cpf]['Telefone fixo']}")
                     print(f"Telefone celular: {dic[cpf]['Telefone celular']}")
                     print(f"Data de nascimento: {dic[cpf]['Data de nascimento']}")
-                    print("************************************************")
+                    print("-" * 20)
             else:
                 print("Não há clientes cadastrados.")
 
@@ -573,7 +633,7 @@ def opcoes_veiculo(dic): #concertei o erro do while e do valor
                     print(f"Combustível: {dic[codigo]['Combustível']}")
                     print(f"Ano: {dic[codigo]['Ano']}")
                     print(f"Modelo: {dic[codigo]['Modelo']}")
-                    print("************************************************")
+                    print("-" * 20)
         
         elif valor == 2:
             codigo = input("Informe o código do veículo: ")
