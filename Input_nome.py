@@ -416,6 +416,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                                     dicio_alugueis[cpf] = [] #para ter varios alugueis no mesmo cpf
                                 dicio_alugueis[cpf].append(dados_aluguel)
                                 salvarAluguel(dicio_alugueis)
+                                os.system('cls')
                                 print("Aluguel concluído com sucesso!")
                             else:
                                 print("Veículo ja alugado para esta data.")
@@ -488,6 +489,7 @@ def opcoes_cliente(dic):
         valor = submenu_cliente()
         if valor == 1:
             if len(dic) != 0:
+                os.system('cls')
                 print("Dados de todos os clientes:")
                 for cpf in dic:
                     print(f"CPF: ", cpf)
@@ -503,6 +505,7 @@ def opcoes_cliente(dic):
         elif valor == 2:
             cpf = input("Insira o CPF do cliente: ")
             if cpf in dic:
+                os.system('cls')
                 print(f"Nome: {dic[cpf]['Nome']}")
                 print(f"CPF: {cpf}")
                 print(f"Endereço: {dic[cpf]['Endereço']}")
@@ -530,6 +533,7 @@ def opcoes_cliente(dic):
                     dados_clientes["Data de nascimento"] = data_nasc
                     dic[cpf] = dados_clientes
                     salvarCliente(dic)
+                    os.system('cls')
                     print("Cliente cadastrado com sucesso!")
                 else:
                     print("Data inválida, tente novamente.")
@@ -544,27 +548,32 @@ def opcoes_cliente(dic):
                     novo_nome = input("Novo nome: ")
                     dic[cpf]["Nome"] = novo_nome
                     salvarCliente(dic)
+                    os.system('cls')
                     print("Nome alterado com sucesso!")
                 elif op == 2:
                     novo_endereco = input("Novo endereço: ")
                     dic[cpf]["Endereço"] = novo_endereco
                     salvarCliente(dic)
+                    os.system('cls')
                     print("Endereço alterado com sucesso!")
                 elif op == 3:
                     novo_tel_fix = input("Novo telefone fixo: ")
                     dic[cpf]["Telefone fixo"] = novo_tel_fix
                     salvarCliente(dic)
+                    os.system('cls')
                     print("Telefone fixo alterado com sucesso!")
                 elif op == 4:
                     novo_cel = input("Novo telefone celular: ")
                     dic[cpf]["Telefone celular"] = novo_cel
                     salvarCliente(dic)
+                    os.system('cls')
                     print("Telefone celular alterado com sucesso!")
                 elif op == 5:
                     nova_data = input("Nova data de nascimento: ")
                     if verificacao_data(nova_data):
                         dic[cpf]["Data de nascimento"] = nova_data
                         salvarCliente(dic)
+                        os.system('cls')
                         print("Data de nascimento alterada com sucesso!")
                     else:
                         print("Data inválida, tente novamente.")
@@ -578,11 +587,13 @@ def opcoes_cliente(dic):
             if cpf in dic:
                 del dic[cpf]
                 salvarCliente(dic)
+                os.system('cls')
                 print("Cliente excluído com sucesso!")
             else:
                 print("CPF não cadastrado.")
 
         elif valor == 6:
+            os.system('cls')
             print("Saindo do submenu.")
         
         else:
@@ -660,24 +671,28 @@ def opcoes_veiculo(dic):
                     nova_desc =input("Nova descrição: ")
                     dic[codigo]["Descrição"] = nova_desc
                     salvarVeiculo(dic)
+                    os.system('cls')
                     print("Descrição alterada com sucesso!")
 
                 elif op == 2:
                     nova_categ = input("Nova categoria: ")
                     dic[codigo]["Categoria"] = nova_categ
                     salvarVeiculo(dic)
+                    os.system('cls')
                     print("Categoria alterada com sucesso!")
 
                 elif op == 3:
                     nova_capac = input("Nova capacidade: ")
                     dic[codigo]["Capacidade"] = nova_capac
                     salvarVeiculo(dic)
+                    os.system('cls')
                     print("Capacidade alterada com sucesso!")
 
                 elif op == 4:
                     novo_combustivel = input("Novo combustível: ")
                     dic[codigo]["Combustível"] = novo_combustivel
                     salvarVeiculo(dic)
+                    os.system('cls')
                     print("Combustível alterado com sucesso!")
 
                 elif op == 5:
@@ -687,18 +702,22 @@ def opcoes_veiculo(dic):
                     else:
                         dic[codigo]["Ano"] = novo_ano
                         salvarVeiculo(dic)
+                        os.system('cls')
                         print("Ano alterado com sucesso!")
 
                 elif op == 6:
                     novo_modelo = input("Novo modelo: ")
                     dic[codigo]["Modelo"] = novo_modelo
                     salvarVeiculo(dic)
+                    os.system('cls')
                     print("Modelo alterado com sucesso!")
 
                 else:
+                    os.system('cls')
                     print("Opção Inválida.")
 
             else:
+                os.system('cls')
                 print("Código não encontrado.")
 
         elif valor == 5:
@@ -706,8 +725,10 @@ def opcoes_veiculo(dic):
             if codigo in dic:
                 del dic[codigo]
                 salvarVeiculo(dic)
+                os.system('cls')
                 print("Veículo excluído com sucesso!")
             else:
+                os.system('cls')
                 print("Veículo não cadastrado.")
 
         elif valor == 6:
