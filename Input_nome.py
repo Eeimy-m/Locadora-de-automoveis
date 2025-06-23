@@ -243,7 +243,7 @@ def carregarRelatorio():
             relatorio += linha + "\n" # se não, continua guardando as infos
     arq.close()
 
-def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis,dicio_relatorios): 
+def reservas_cliente(dicio_cliente, dicio_veiculo, dicio_alugueis): 
     valor = 1
     while valor != 4:
         valor = submenu_Relatórios()
@@ -478,7 +478,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
             else:
                 print("CPF não encontrado no sistema.")
 
-        elif valor == 3:  #melhorei o sistema de input de alugueis
+        elif valor == 3:  
             dados_aluguel = {}
             os.system('cls')
             print("/--Realização de aluguel--/")
@@ -603,7 +603,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                         else:
                             print("Formato de data inválido, tente novamente.")
 
-                    elif op == 3: #preciso alterar
+                    elif op == 3: 
                         novo_veiculo = input("Insira o nome do novo veículo: ")
                         lista_veiculos = []
                         encontrou = False
@@ -978,7 +978,7 @@ def main():
         elif option == 3:
             opcoes_aluguel(dic_alugueis, dic_clientes, dic_veiculos)
         elif option == 4:
-            reservas_cliente(dic_clientes, dic_veiculos, dic_alugueis,dic_relatorios)
+            reservas_cliente(dic_clientes, dic_veiculos, dic_alugueis)
         elif option == 5:
             print("Programa encerrado.")
         else:
