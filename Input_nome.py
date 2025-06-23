@@ -547,7 +547,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                                         else:
                                             print("Fromato de data inválido, tente novamente.")
                                     elif op == 2:
-                                        nova_data_saida = input("Informe a nova data de entrada do aluguel no formato dd/mm/aaaa: ")
+                                        nova_data_saida = input("Informe a nova data de saída do aluguel no formato dd/mm/aaaa: ")
                                         if verificacao_data(nova_data_saida):
                                             aluguel["data saida"] = nova_data_saida
                                             salvarAluguel(dicio_alugueis)
@@ -570,12 +570,14 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                                             for codigo in dicio_veiculos: 
                                                 if codigo == escolha:
                                                     aluguel['codigo veiculo'] = escolha
+                                                    salvarAluguel(dicio_alugueis)
                                                     print("Veículo atualizado com sucesso!")
 
                                         elif len(lista_veiculos) == 1:
                                             for codigo, dados_veiculo in dicio_veiculos.items():
                                                 if lista_veiculos[0] == codigo:
                                                     aluguel["codigo veiculo"] = codigo
+                                                    salvarAluguel(dicio_alugueis)
                                                     print("Veículo atualizado com sucesso!")
                                         
                                         else:
@@ -618,6 +620,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                                         if opcao_aluguel == aluguel:
                                             if aluguel['Modelo'] == novo_veiculo.lower():
                                                 aluguel['codigo veiculo'] = escolha
+                                                salvarAluguel(dicio_alugueis)
                                                 print("Veículo atualizado com sucesso!")
 
                         elif len(lista_veiculos) == 1:
@@ -629,6 +632,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
                                                 if lista_veiculos[0] == dados_veiculo['Modelo'].lower():
                                                     if aluguel['Nome'] == novo_veiculo.lower():
                                                         aluguel["codigo veiculo"] = codigo
+                                                        salvarAluguel(dicio_alugueis)
                                                         print("Veículo atualizado com sucesso!")
                             
                         else:
