@@ -45,3 +45,28 @@ Data de aluguel: 22/06/2025
 Data de devolucao: 30/07/2025
 
 ****************************
+RELATORIO POR VEICULO
+Modelo: fiat uno
+Codigo: 456
+Descricao: carro seminovo
+Categoria: carro
+Capacidade: 5 pessoas
+Combustivel: flex
+Ano: 2000
+
+Nome: Isabela Mendes
+CPF: 12345
+Data de aluguel: 22/06/2025
+Data de devolucao: 30/07/2025
+
+Nome: Juliana Rocha
+CPF: 67891234567
+Data de aluguel: 03/09/2025
+Data de devolucao: 25/12/2025
+
+Nome: Maria Oliveira
+CPF: 98765432109
+Data de aluguel: 03/05/2025
+Data de devolucao: 20/05/2025
+
+****************************
