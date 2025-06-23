@@ -99,7 +99,6 @@ def escolher_opcao_veiculo(lista_codigos, dicio_veiculos):
         print(f"Opções do veiculo selecionado")
         for codigo, dados_veiculos in dicio_veiculos.items():
             if i == codigo:
-                cont+=1
                 print(f"/--Opção {cont}--/")
                 print(f"Descrição: {dados_veiculos['Descrição']}")
                 print(f"Capacidade: {dados_veiculos['Capacidade']}")
@@ -110,6 +109,23 @@ def escolher_opcao_veiculo(lista_codigos, dicio_veiculos):
     op = int(input("Selecione uma das opções a cima: "))
     indice = op - 1
     return lista_codigos[indice] #devolve para a função o código do carro escolhido
+
+def escolher_opção_aluguel(lista, dicio_veiculos):
+    cont = 0 
+    for dicionario in lista:
+        cont+=1
+        print(f"/--Opção {cont}--/")
+        print(f"Data de aluguel: {dicionario['data entrada']}")
+        print(f"Data de devolução: {dicionario['data saida']}")
+        for codigo_veiculo, dados_veiculo in dicio_veiculos.items():
+            if codigo_veiculo == dicionario['codigo veiculo']:
+                print(f"Modelo do veículo: {dados_veiculo['Modelo']}")
+        print("-" * 20)
+        print()
+    
+    escolha = int(input("Selecione uma das opções fornecidas a cima: "))
+    indice = escolha - 1
+    return lista[indice]
 
 #---------arquivos------------------
 def salvarCliente(dic):
@@ -465,7 +481,7 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
         elif valor == 3:  #melhorei o sistema de input de alugueis
             dados_aluguel = {}
             os.system('cls')
-            print("Realização de aluguel")
+            print("/--Realização de aluguel--/")
             cpf = input("Insira o CPF do cliente: ")
             if cpf in dicio_clientes:         
                 dataEntrada = input("Insira a data de entrada do aluguel no formato dd/mm/aaaa: ")
@@ -509,30 +525,115 @@ def opcoes_aluguel(dicio_alugueis, dicio_clientes, dicio_veiculos):
         elif valor == 4: 
             op = alterar_aluguel()
             cpf = input("CPF do cliente: ")
-            if cpf in dicio_alugueis:
-                if op == 1:
-                    nova_data_entrada = input("Informe a nova data de entrada do aluguel no formato dd/mm/aaaa: ") 
-                    if verificacao_data(nova_data_entrada):
-                        dicio_alugueis[cpf]["data entrada"] = nova_data_entrada
-                        salvarAluguel(dicio_alugueis)
-                        print("Nova data de entrada adicionada!")
-                    else:
-                        print("Fromato de data inválido, tente novamente.")
-                elif op == 2:
-                    nova_data_saida = input("Informe a nova data de entrada do aluguel no formato dd/mm/aaaa: ")
-                    if verificacao_data(nova_data_saida):
-                        dicio_alugueis[cpf]["data saida"] = nova_data_saida
-                        salvarAluguel(dicio_alugueis)
-                        print("Nova data de saída adicionada!")
-                    else:
-                        print("Formato de data inválido, tente novamente.")
+            alugueis_encontrados = []
+            for cpf_aluguel, lista_alugueis in dicio_alugueis.items():
+                for aluguel in lista_alugueis:
+                    if cpf_aluguel == cpf:
+                        alugueis_encontrados.append(aluguel) #A vatiável aluguel é um dicionário
+            if cpf in dicio_clientes:
+                if len(alugueis_encontrados) > 1:                
+                    opcao_aluguel = escolher_opção_aluguel(alugueis_encontrados, dicio_veiculos) #a função retorna um dicionário
+                    for cpf_aluguel, lista_alugueis in dicio_alugueis.items():
+                        if cpf == cpf_aluguel:  
+                            for aluguel in lista_alugueis:
+                                if opcao_aluguel == aluguel:
+                                    if op == 1:
+                                        nova_data_entrada = input("Informe a nova data de entrada do aluguel no formato dd/mm/aaaa: ") 
+                                        if verificacao_data(nova_data_entrada):
+                                            aluguel["data entrada"] = nova_data_entrada
+                                            salvarAluguel(dicio_alugueis)
+                                            os.system('cls')
+                                            print("Nova data de entrada adicionada!")
+                                        else:
+                                            print("Fromato de data inválido, tente novamente.")
+                                    elif op == 2:
+                                        nova_data_saida = input("Informe a nova data de entrada do aluguel no formato dd/mm/aaaa: ")
+                                        if verificacao_data(nova_data_saida):
+                                            aluguel["data saida"] = nova_data_saida
+                                            salvarAluguel(dicio_alugueis)
+                                            os.system('cls')
+                                            print("Nova data de saída adicionada!")
+                                        else:
+                                            print("Formato de data inválido, tente novamente.")
 
-                elif op == 3:
-                    novo_veiculo = input("Insira o código do novo veículo: ")
-                    if novo_veiculo in dicio_veiculos:
-                        dicio_alugueis[cpf]["codigo veiculo"] = novo_veiculo
-                    else:
-                        print("Veículo não encontrado no sistema.")
+                                    elif op == 3: #preciso alterar
+                                        novo_veiculo = input("Insira o nome do novo veículo: ")
+                                        lista_veiculos = []
+                                        encontrou = False
+                                        for codigo, dados_veiculo in dicio_veiculos.items():
+                                            if dados_veiculo["Modelo"].lower() == novo_veiculo.lower():
+                                                lista_veiculos.append(codigo)
+                                                encontrou = True
+
+                                        if len(lista_veiculos) > 1:
+                                            escolha = escolher_opcao_veiculo(lista_veiculos, dicio_veiculos)
+                                            for codigo in dicio_veiculos: 
+                                                if codigo == escolha:
+                                                    aluguel['codigo veiculo'] = escolha
+                                                    print("Veículo atualizado com sucesso!")
+
+                                        elif len(lista_veiculos) == 1:
+                                            for codigo, dados_veiculo in dicio_veiculos.items():
+                                                if lista_veiculos[0] == codigo:
+                                                    aluguel["codigo veiculo"] = codigo
+                                                    print("Veículo atualizado com sucesso!")
+                                        
+                                        else:
+                                            print("Não foi possível concluir a atualização do veículo.")
+
+                elif len(alugueis_encontrados) == 1:
+                    if op == 1:
+                        nova_data_entrada = input("Informe a nova data de entrada do aluguel no formato dd/mm/aaaa: ") 
+                        if verificacao_data(nova_data_entrada):
+                            aluguel["data entrada"] = nova_data_entrada
+                            salvarAluguel(dicio_alugueis)
+                            os.system('cls')
+                            print("Nova data de entrada adicionada!")
+                        else:
+                            print("Fromato de data inválido, tente novamente.")
+                    elif op == 2:
+                        nova_data_saida = input("Informe a nova data de entrada do aluguel no formato dd/mm/aaaa: ")
+                        if verificacao_data(nova_data_saida):
+                            aluguel["data saida"] = nova_data_saida
+                            salvarAluguel(dicio_alugueis)
+                            os.system('cls')
+                            print("Nova data de saída adicionada!")
+                        else:
+                            print("Formato de data inválido, tente novamente.")
+
+                    elif op == 3: #preciso alterar
+                        novo_veiculo = input("Insira o nome do novo veículo: ")
+                        lista_veiculos = []
+                        encontrou = False
+                        for codigo, dados_veiculo in dicio_veiculos.items():
+                            if dados_veiculo["Modelo"].lower() == novo_veiculo.lower():
+                                lista_veiculos.append(codigo)
+                                encontrou = True
+
+                        if len(lista_veiculos) > 1:
+                            escolha = escolher_opcao_veiculo(lista_veiculos, dicio_veiculos) 
+                            for cpf_aluguel, lista_alugueis in dicio_alugueis.items():
+                                if cpf == cpf_aluguel:  
+                                    for aluguel in lista_alugueis:
+                                        if opcao_aluguel == aluguel:
+                                            if aluguel['Modelo'] == novo_veiculo.lower():
+                                                aluguel['codigo veiculo'] = escolha
+                                                print("Veículo atualizado com sucesso!")
+
+                        elif len(lista_veiculos) == 1:
+                            for codigo, dados_veiculo in dicio_veiculos.items():
+                                for cpf_aluguel, lista_alugueis in dicio_alugueis.items():
+                                    if cpf == cpf_aluguel:  
+                                        for aluguel in lista_alugueis:
+                                            if opcao_aluguel == aluguel:
+                                                if lista_veiculos[0] == dados_veiculo['Modelo'].lower():
+                                                    if aluguel['Nome'] == novo_veiculo.lower():
+                                                        aluguel["codigo veiculo"] = codigo
+                                                        print("Veículo atualizado com sucesso!")
+                            
+                        else:
+                            print("Não foi possível concluir a atualização do veículo.")                    
+
             else:
                 print("CPF não encontrado.")
         
